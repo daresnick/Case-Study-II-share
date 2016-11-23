@@ -260,19 +260,19 @@ p + labs(title = "Box Plot: Trunk Circumference", y = "Circumference", x = "Tree
 
 ### Question 4
 
-- **1.)	First, d ownload âTempâ data set. Find the difference between the maximum and the minimum monthly average temperatures for each country and report/visualize top 20 countries with the maximum differences for the period since 1900.**
+- **1.)	First, download a 'Temp' data set. Find the difference between the maximum and the minimum monthly average temperatures for each country and report/visualize top 20 countries with the maximum differences for the period since 1900.**
 
 
-- **2.) Select a subset of data called âUStempâ where US land temperatures from 01/01/1990 in Temp data. Use UStemp dataset to answer the followings.**
+- **2.) Select a subset of data called 'UStemp' where US land temperatures from 01/01/1990 in Temp data. Use UStemp dataset to answer the followings.**
 
-  - **a) Create a new column to display the monthly average land temperatures in Fahrenheit (Â°F).**
+  - **a) Create a new column to display the monthly average land temperatures in Fahrenheit (°F).**
   
   - **b) Calculate average land temperature by year and plot it. The original file has the average land temperature by month.** 
   
   - **c) Calculate the one year difference of average land temperature by year and provide the maximum difference (value) with corresponding two years.**
 
 
-- **3.) Download âCityTempâ data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.**
+- **3.) Download 'CityTemp' data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.**
 
 - **4.) Compare the two graphs in (i) and (iii)  and comment it.**
 
