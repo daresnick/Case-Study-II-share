@@ -1,5 +1,7 @@
 library(ggplot2)
 
+#Question 3
+
 #Read in Orange dataset from R into data.frame
 df <- data.frame(Orange)
 #get summary of Orange dataset
@@ -8,7 +10,6 @@ summary(df)
 str(df$Tree)
 str(df$age)
 str(df$circumference)
-
 
 #Calculate the mean and the median of the trunk 
 #circumferences for different size of the trees. (Tree)
@@ -28,14 +29,13 @@ knitr::kable(circum.median)
 #Use different plotting symbols for different size of trees.**
 
 
-p <- ggplot(df) + geom_point(aes(y=df$circumference,x=df$age,colour=df$Tree)) +
-  scale_colour_hue(l=80, c=150)
-p + labs(title="Scatter Plot \n Age vs Circumference by Tree",x="Age",y="Circumference",
+p <- ggplot(df) + geom_point(aes(y=circumference,x=age,colour=Tree, shape = Tree),size=3.0) + scale_colour_hue(l=80, c=150)
+p + labs(title="Age vs Circumference by Tree",x="Age",y="Circumference",
          colour="Tree")
 
-p <- ggplot(df,aes(y=df$circumference,x=df$age,colour=df$Tree)) + geom_point() +
-  geom_line(size=1,alpha=0.8) + scale_colour_hue(h=c(180, 270))
-p + labs(title="Line Plot: \n Age vs Circumference by Tree",x="Age",y="Circumference",
+p <- ggplot(df,aes(y=circumference,x=age,colour=Tree)) + geom_point(aes(shape = Tree),size=3.0) +
+  geom_line(size=1,alpha=0.8) + scale_colour_hue(l=80, c=150)
+p + labs(title="Age vs Circumference by Tree",x="Age",y="Circumference",
          colour="Tree")
 
 #Display the trunk circumferences on a comparative boxplot against tree. 
