@@ -18,20 +18,16 @@ November 21, 2016
 ```{}
 proc iml;
 /*create 3x4 matrix*/
+reset print;
 x={4 5 1 2,
    1 0 3 5,
    2 1 8 2};
-run;
-create mymatrix from x[colname={"a","b","c","d"}];
-append from x;
-close mymatrix;
-proc print data=mymatrix;
-run;
+quit;
 ```
 
 - SAS output for X matrix shown below:
 
-![](https://udacity-github-sync-content.s3.amazonaws.com/_attachments/26272/1479789335/Screen_Shot_2016-11-21_at_10.35.22_PM.png)
+![](https://github.com/daresnick/Case-Study-II-share/blob/master/ExternalFigures/sasmatrixpic.png)
 
 
 - **R Code**
@@ -59,7 +55,7 @@ print x
 
  - Python output (Ipython Notebook):
  
- ![](https://udacity-github-sync-content.s3.amazonaws.com/_attachments/26272/1479789062/Screen_Shot_2016-11-21_at_10.30.42_PM.png)
+ ![](https://github.com/daresnick/Case-Study-II-share/blob/master/ExternalFigures/pythonmatrixpic.png)
 
 <br>
 
