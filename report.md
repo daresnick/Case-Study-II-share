@@ -18,20 +18,16 @@ November 21, 2016
 ```{}
 proc iml;
 /*create 3x4 matrix*/
+reset print;
 x={4 5 1 2,
    1 0 3 5,
    2 1 8 2};
-run;
-create mymatrix from x[colname={"a","b","c","d"}];
-append from x;
-close mymatrix;
-proc print data=mymatrix;
-run;
+quit;
 ```
 
 - SAS output for X matrix shown below:
 
-![](https://udacity-github-sync-content.s3.amazonaws.com/_attachments/26272/1479789335/Screen_Shot_2016-11-21_at_10.35.22_PM.png)
+![](https://github.com/daresnick/Case-Study-II-share/blob/master/ExternalFigures/sasmatrixpic.png)
 
 
 - **R Code**
@@ -59,7 +55,7 @@ print x
 
  - Python output (Ipython Notebook):
  
- ![](https://udacity-github-sync-content.s3.amazonaws.com/_attachments/26272/1479789062/Screen_Shot_2016-11-21_at_10.30.42_PM.png)
+ ![](https://github.com/daresnick/Case-Study-II-share/blob/master/ExternalFigures/pythonmatrixpic.png)
 
 <br>
 
@@ -264,19 +260,19 @@ p + labs(title = "Box Plot: Trunk Circumference", y = "Circumference", x = "Tree
 
 ### Question 4
 
-- **1.)	First, d ownload âTempâ data set. Find the difference between the maximum and the minimum monthly average temperatures for each country and report/visualize top 20 countries with the maximum differences for the period since 1900.**
+- **1.)	First, download a 'Temp' data set. Find the difference between the maximum and the minimum monthly average temperatures for each country and report/visualize top 20 countries with the maximum differences for the period since 1900.**
 
 
-- **2.) Select a subset of data called âUStempâ where US land temperatures from 01/01/1990 in Temp data. Use UStemp dataset to answer the followings.**
+- **2.) Select a subset of data called 'UStemp' where US land temperatures from 01/01/1990 in Temp data. Use UStemp dataset to answer the followings.**
 
-  - **a) Create a new column to display the monthly average land temperatures in Fahrenheit (Â°F).**
+  - **a) Create a new column to display the monthly average land temperatures in Fahrenheit (°F).**
   
   - **b) Calculate average land temperature by year and plot it. The original file has the average land temperature by month.** 
   
   - **c) Calculate the one year difference of average land temperature by year and provide the maximum difference (value) with corresponding two years.**
 
 
-- **3.) Download âCityTempâ data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.**
+- **3.) Download 'CityTemp' data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.**
 
 - **4.) Compare the two graphs in (i) and (iii)  and comment it.**
 
