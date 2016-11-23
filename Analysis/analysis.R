@@ -65,6 +65,9 @@ head(temp1)
 #Dimensions of the dataset
 dim(temp1)
 
+temp2 <- subset(temp1, as.Date(Date) >= "1900-01-01")
+head(temp2)
+
 #Aggregate for max and min average temps
 temp.max <- aggregate(temp1["Monthly.AverageTemp"],by=temp1["Country"],FUN=max)
 temp.min <- aggregate(temp1["Monthly.AverageTemp"],by=temp1["Country"],FUN=min,na.rm=TRUE)
@@ -84,10 +87,11 @@ data$Diff <- data$'Max Avg. Temp' - data$'Min Avg. Temp'
 data <-data[order(data$Diff,data$Country,decreasing = TRUE),]
 head(data)
 #Subset the data to only take the first 20 columns with highest temp diff.
-data.sub <- data[1:20,]
+data.sub <- data[1:20,] 
 
+#####Needs Changing.....
 #plot Country vs Temp Diff
-p<- ggplot(data.sub,aes(x=Diff,y=Country))+geom_point(colour="red",size=3)
+p<- ggplot(data.sub,aes(Country,fill=Diff))+geom_bar() + coord_flip()
 p + labs(title="Country vs Change in Temperature",
          x="Maximum - Minimum Avg. Monthly Temp",
          y = "Country")
