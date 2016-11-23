@@ -6,8 +6,6 @@
 
 **Date:** November 22, 2016  
 
-test again
-
 
 <p align="center">
 <img src=http://www.smu.edu/~/media/Site/DevelopmentExternalAffairs/PublicAffairs/Logos/smu/SMULogoR>
