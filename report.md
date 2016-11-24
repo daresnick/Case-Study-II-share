@@ -11,7 +11,7 @@ December 1, 2016
 
 **Create the following X matrix and print it from SAS, R, and Python.**
 
-![](https://udacity-github-sync-content.s3.amazonaws.com/_attachments/26272/1479788865/Screen_Shot_2016-11-21_at_10.27.27_PM.png)
+![](https://github.com/daresnick/Case-Study-II-share/blob/master/ExternalFigures/xmatrix.png)
 
 - **SAS Code**
 
@@ -110,7 +110,7 @@ get
 ## function (x, pos = -1L, envir = as.environment(pos), mode = "any", 
 ##     inherits = TRUE) 
 ## .Internal(get(x, envir, mode, inherits))
-## <bytecode: 0x00000000135e6fb0>
+## <bytecode: 0x00000000135e6f68>
 ## <environment: namespace:base>
 ```
 
