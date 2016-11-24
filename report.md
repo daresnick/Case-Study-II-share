@@ -261,7 +261,7 @@ p + labs(title = "Box Plot: Trunk Circumference", y = "Circumference", x = "Tree
 
 ### Question 4
 
-- **1.)	First, download a 'Temp' data set. Find the difference between the maximum and the minimum monthly average temperatures for each country and report/visualize top 20 countries with the maximum differences for the period since 1900.**
+###(i) First, download a 'Temp' data set. Find the difference between the maximum and the minimum monthly average temperatures for each country and report/visualize top 20 countries with the maximum differences for the period since 1900.**
 
 <br>
 
@@ -383,7 +383,7 @@ p + labs(title = "Difference per Country") + theme(axis.text.x = element_text(an
 <img src="report_files/figure-html/unnamed-chunk-16-1.png" width="850px" />
 
 
-- **2.) Select a subset of data called 'UStemp' where US land temperatures from 01/01/1990 in Temp data. Use UStemp dataset to answer the followings.**
+###(ii) Select a subset of data called 'UStemp' where US land temperatures from 01/01/1990 in Temp data. Use UStemp dataset to answer the followings.**
 
 
 ```r
@@ -471,7 +471,7 @@ p + labs(title = "Yearly Average Difference") + theme(axis.text.x = element_text
 
 <br>
 
-- **3.) Download 'CityTemp' data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.**  
+###(iii) Download 'CityTemp' data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.**  
 
 #### Load data
 
@@ -592,7 +592,7 @@ p + labs(title = "Difference per City") + theme(axis.text.x = element_text(angle
 
 <br>
 
-- **4.) Compare the two graphs in (i) and (iii)  and comment it.**
+###(iv) Compare the two graphs in (i) and (iii)  and comment it.**
 
 
 ```r
@@ -612,3 +612,10 @@ p4 + labs(title = "Max Difference for Top 20 Countries/Cities", x = "Countries (
 
 <br>
 
+### Question 05  (10 points)   
+
+
+
+####Christmas Bonus
+
+![](https://github.com/daresnick/Case-Study-II-share/blob/master/ExternalFigures/christmasstree.png)
