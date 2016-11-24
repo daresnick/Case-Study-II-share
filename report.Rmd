@@ -23,7 +23,7 @@ opts_chunk$set(out.width='850px', dpi=300)
 
 **Create the following X matrix and print it from SAS, R, and Python.**
 
-![](https://udacity-github-sync-content.s3.amazonaws.com/_attachments/26272/1479788865/Screen_Shot_2016-11-21_at_10.27.27_PM.png)
+![](https://github.com/daresnick/Case-Study-II-share/blob/master/ExternalFigures/xmatrix.png)
 
 - **SAS Code**
 
@@ -69,19 +69,61 @@ print x
 
 
 - **1.) Download the data.**
+```{r}
+library(tseries)
+#SNPdatahist <- get.hist.quote('^gspc',quote="Close")
+SNPdata <- get.hist.quote('adp',quote="Close")
+plot(SNPdata)
+```
 
+<br>  
 
 - **2.) Calculate log returns.**
+```{r}
+SNPret <- log(lag(SNPdata)) - log(SNPdata)
+SNPret <- SNPret[!(is.na(SNPret)),]
+```
 
+<br>  
 
 - **3.) Calculate volatility measure.**
+```{r}
+SNPvol <- sd(SNPret) * sqrt(250) * 100
+SNPvol
+```
 
+<br>  
 
 - **4.) Calculate volatility over entire length of series for various three different decay factors.**
+```{r}
+## volatility
+get
+Vol <- function(d, logrets)
+{
+	var = 0
+	lam = 0
+	varlist <- c()
+	for (r in logrets) {
+		lam = lam*(1 - 1/d) + 1
+	var = (1 - 1/lam)*var + (1/lam)*r^2
+		varlist <- c(varlist, var)
+	}
+	sqrt(varlist)
+}
 
+volest <- Vol(10,SNPret)
+volest2 <- Vol(30,SNPret)
+volest3 <- Vol(100,SNPret)
+```
+
+<br>  
 
 - **5.) Plot the results, overlaying the volatility curves on the data, just as was done in the S&P example.**
-
+```{r}
+plot(volest,type="l")
+lines(volest2,type="l",col="red")
+lines(volest3, type = "l", col="blue")
+```
 <br>
 
 ### Question 3
