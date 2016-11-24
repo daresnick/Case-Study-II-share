@@ -1,6 +1,6 @@
 # Case Study II
 Trace Smith & Damon Resnick  
-November 21, 2016  
+December 1, 2016  
 
 
 
@@ -206,7 +206,7 @@ p + labs(title = "Age vs Circumference by Tree", x = "Age", y = "Circumference",
     colour = "Tree")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-8-1.png" width="1000px" />
+<img src="report_files/figure-html/unnamed-chunk-8-1.png" width="850px" />
 
 
 ```r
@@ -217,7 +217,7 @@ p + labs(title = "Age vs Circumference by Tree", x = "Age", y = "Circumference",
     colour = "Tree")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-9-1.png" width="1000px" />
+<img src="report_files/figure-html/unnamed-chunk-9-1.png" width="850px" />
 
 
 - **c) Display the trunk circumferences on a comparative boxplot against tree. Be sure you order the boxplots in the increasing order of maximum diameter.**
@@ -255,7 +255,7 @@ p <- ggplot(df, aes(x = Tree, y = circumference)) + geom_boxplot(aes(fill = Tree
 p + labs(title = "Box Plot: Trunk Circumference", y = "Circumference", x = "Tree")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-12-1.png" width="1000px" />
+<img src="report_files/figure-html/unnamed-chunk-12-1.png" width="850px" />
 
 <br>
 
@@ -380,7 +380,7 @@ p + labs(title = "Difference per Country") + theme(axis.text.x = element_text(an
     hjust = 1), legend.position = "none")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-16-1.png" width="1000px" />
+<img src="report_files/figure-html/unnamed-chunk-16-1.png" width="850px" />
 
 
 - **2.) Select a subset of data called 'UStemp' where US land temperatures from 01/01/1990 in Temp data. Use UStemp dataset to answer the followings.**
@@ -445,7 +445,7 @@ p + labs(title = "Yearly Avg. Temperature") + theme(axis.text.x = element_text(a
     hjust = 1), legend.position = "none")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-19-1.png" width="1000px" />
+<img src="report_files/figure-html/unnamed-chunk-19-1.png" width="850px" />
 
 <br>
 
@@ -467,7 +467,7 @@ p + labs(title = "Yearly Average Difference") + theme(axis.text.x = element_text
     hjust = 1), legend.position = "none")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-20-1.png" width="1000px" />
+<img src="report_files/figure-html/unnamed-chunk-20-1.png" width="850px" />
 
 <br>
 
@@ -587,13 +587,27 @@ p + labs(title = "Difference per City") + theme(axis.text.x = element_text(angle
     hjust = 1), legend.position = "none")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-23-1.png" width="1000px" />
+<img src="report_files/figure-html/unnamed-chunk-23-1.png" width="850px" />
 
 
 <br>
 
 - **4.) Compare the two graphs in (i) and (iii)  and comment it.**
 
+
+```r
+p4 <- ggplot() + geom_point(data = data.sub, aes(x = data.sub$Country, y = data.sub$Diff), 
+    color = "Blue3", size = 3) + geom_point(data = citydata.sub, aes(x = citydata.sub$City, 
+    y = citydata.sub$Diff), color = "Red2", size = 3)
+p4 + labs(title = "Max Difference for Top 20 Countries/Cities", x = "Countries (Blue) and Cities (Red)", 
+    y = "Max Difference") + theme(title = element_text(size = 14), axis.title = element_text(size = 14), 
+    axis.text.x = element_text(angle = 60, hjust = 1), legend.position = "none")
+```
+
+<img src="report_files/figure-html/unnamed-chunk-24-1.png" width="850px" />
+<br>  
+
+#### Looking at the top 20 countries and cities in the world for the temperature swing during a year we see that the City of Harbin has the largest temperature swing, but by and large the countries have a wider temperature swing than the major cities. It is intersting to note that Russia has the 3rd largest temperature swing for a country and has two major cities in the top 20. Canada ranked 4th, also has two top 20 cities while the US is not ranked in the top 20 but has two cities in the top 20.
 
 
 <br>

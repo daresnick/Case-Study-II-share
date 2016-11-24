@@ -1,7 +1,7 @@
 ---
 title: "Case Study II"
 author: "Trace Smith & Damon Resnick"
-date: "November 21, 2016"
+date: "December 1, 2016"
 output:
   html_document:
     keep_md: TRUE
@@ -14,7 +14,7 @@ library(knitr)
 library(formatR)
 knitr::opts_chunk$set(echo = TRUE)
 opts_chunk$set(tidy.opts=list(width.cutoff=80),tidy=TRUE)
-opts_chunk$set(out.width='1000px', dpi=300)
+opts_chunk$set(out.width='850px', dpi=300)
 ```
 
 <br>
@@ -178,7 +178,7 @@ p + labs(title="Box Plot: Trunk Circumference", y="Circumference",x="Tree")
 
 ### Question 4
 
-- **1.)	First, download a 'Temp' data set. Find the difference between the maximum and the minimum monthly average temperatures for each country and report/visualize top 20 countries with the maximum differences for the period since 1900.**
+###(i) First, download a 'Temp' data set. Find the difference between the maximum and the minimum monthly average temperatures for each country and report/visualize top 20 countries with the maximum differences for the period since 1900.**
 
 <br>
 
@@ -239,7 +239,7 @@ p + labs(title="Difference per Country") +
 ```
 
 
-- **2.) Select a subset of data called 'UStemp' where US land temperatures from 01/01/1990 in Temp data. Use UStemp dataset to answer the followings.**
+###(ii) Select a subset of data called 'UStemp' where US land temperatures from 01/01/1990 in Temp data. Use UStemp dataset to answer the followings.**
 
 ```{r}
 temp.usa <- subset(temp1,temp1$Country == "United States")
@@ -288,7 +288,7 @@ p + labs(title="Yearly Average Difference") +
 
 <br>
 
-- **3.) Download 'CityTemp' data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.**  
+###(iii) Download 'CityTemp' data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.**  
 
 #### Load data
 ```{r}
@@ -348,28 +348,21 @@ p + labs(title="Difference per City") +
 
 <br>
 
-- **4.) Compare the two graphs in (i) and (iii)  and comment it.**
+###(iv) Compare the two graphs in (i) and (iii)  and comment it.**
 
 ```{r}
-#p1 <- ggplot(data.sub) + geom_point(aes(x=Country,y=Diff), size = 3, colour="Blue")
-#p1 + labs(title="Difference per Country") + 
-#  theme(axis.text.x=element_text(angle=60,hjust=1),legend.position = "none")
-#p2 <- ggplot(citydata.sub) + geom_point(aes(x=City,y=Diff), size = 3, colour="Blue2")
-#p2 + labs(title="Difference per City") + 
-#  theme(axis.text.x=element_text(angle=60,hjust=1),legend.position = "none")
-
-
-dffc <- c(data.sub$Country, citydata.sub$City)
-dffdiff <- c(data.sub$Diff, citydata.sub$Diff)
-dffcd <- data.frame(dffc, dffdiff)
-
-p3 <- ggplot(dffcd) + geom_point(aes(x=dffc,y=dffdiff), size = 3, colour="Steelblue")
-p3 + labs(title="Difference per Country and City") + 
-  theme(axis.text.x=element_text(angle=60,hjust=1),legend.position = "none")
-
-#plot3 <- ggplot(NULL) + geom_point(data = data.sub, aes(x=Country,y=Diff)) + geom_step(data = citydata.sub, aes(x=City,y=Diff))
-#plot3
+p4 <- ggplot() + geom_point(data=data.sub, aes(x=data.sub$Country, y=data.sub$Diff), color='Blue3', size = 3) + geom_point(data=citydata.sub, aes(x=citydata.sub$City, y=citydata.sub$Diff), color='Red2', size = 3)
+p4 + labs(title="Max Difference for Top 20 Countries/Cities", x = "Countries (Blue) and Cities (Red)", y = "Max Difference") + theme(title=element_text(size=14), axis.title=element_text(size=14), axis.text.x=element_text(angle=60,hjust=1),legend.position = "none")
 ```
+<br>  
+
+#### Looking at the top 20 countries and cities in the world for the temperature swing during a year we see that the City of Harbin has the largest temperature swing, but by and large the countries have a wider temperature swing than the major cities. It is intersting to note that Russia has the 3rd largest temperature swing for a country and has two major cities in the top 20. Canada ranked 4th, also has two top 20 cities while the US is not ranked in the top 20 but has two cities in the top 20.
+
 
 <br>
 
+Question 05  (10 points)
+
+Christmas Bonus
+
+![](https://github.com/daresnick/Case-Study-II-share/blob/master/ExternalFigures/christmasstree.png)
