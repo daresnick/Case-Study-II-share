@@ -66,18 +66,83 @@ print x
 
 - **1.) Download the data.**
 
+```r
+library(tseries)
+# SNPdatahist <- get.hist.quote('^gspc',quote='Close')
+SNPdata <- get.hist.quote("adp", quote = "Close")
+plot(SNPdata)
+```
+
+<img src="report_files/figure-html/unnamed-chunk-2-1.png" width="850px" />
+
+<br>  
 
 - **2.) Calculate log returns.**
 
+```r
+SNPret <- log(lag(SNPdata)) - log(SNPdata)
+SNPret <- SNPret[!(is.na(SNPret)), ]
+```
+
+<br>  
 
 - **3.) Calculate volatility measure.**
 
+```r
+SNPvol <- sd(SNPret) * sqrt(250) * 100
+SNPvol
+```
+
+```
+## [1] 34.29964
+```
+
+<br>  
 
 - **4.) Calculate volatility over entire length of series for various three different decay factors.**
 
+```r
+## volatility
+get
+```
+
+```
+## function (x, pos = -1L, envir = as.environment(pos), mode = "any", 
+##     inherits = TRUE) 
+## .Internal(get(x, envir, mode, inherits))
+## <bytecode: 0x00000000135e6fb0>
+## <environment: namespace:base>
+```
+
+```r
+Vol <- function(d, logrets) {
+    var = 0
+    lam = 0
+    varlist <- c()
+    for (r in logrets) {
+        lam = lam * (1 - 1/d) + 1
+        var = (1 - 1/lam) * var + (1/lam) * r^2
+        varlist <- c(varlist, var)
+    }
+    sqrt(varlist)
+}
+
+volest <- Vol(10, SNPret)
+volest2 <- Vol(30, SNPret)
+volest3 <- Vol(100, SNPret)
+```
+
+<br>  
 
 - **5.) Plot the results, overlaying the volatility curves on the data, just as was done in the S&P example.**
 
+```r
+plot(volest, type = "l")
+lines(volest2, type = "l", col = "red")
+lines(volest3, type = "l", col = "blue")
+```
+
+<img src="report_files/figure-html/unnamed-chunk-6-1.png" width="850px" />
 <br>
 
 ### Question 3
@@ -206,7 +271,7 @@ p + labs(title = "Age vs Circumference by Tree", x = "Age", y = "Circumference",
     colour = "Tree")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-8-1.png" width="850px" />
+<img src="report_files/figure-html/unnamed-chunk-13-1.png" width="850px" />
 
 
 ```r
@@ -217,7 +282,7 @@ p + labs(title = "Age vs Circumference by Tree", x = "Age", y = "Circumference",
     colour = "Tree")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-9-1.png" width="850px" />
+<img src="report_files/figure-html/unnamed-chunk-14-1.png" width="850px" />
 
 
 - **c) Display the trunk circumferences on a comparative boxplot against tree. Be sure you order the boxplots in the increasing order of maximum diameter.**
@@ -255,7 +320,7 @@ p <- ggplot(df, aes(x = Tree, y = circumference)) + geom_boxplot(aes(fill = Tree
 p + labs(title = "Box Plot: Trunk Circumference", y = "Circumference", x = "Tree")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-12-1.png" width="850px" />
+<img src="report_files/figure-html/unnamed-chunk-17-1.png" width="850px" />
 
 <br>
 
@@ -380,7 +445,7 @@ p + labs(title = "Difference per Country") + theme(axis.text.x = element_text(an
     hjust = 1), legend.position = "none")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-16-1.png" width="850px" />
+<img src="report_files/figure-html/unnamed-chunk-21-1.png" width="850px" />
 
 
 ###(ii) Select a subset of data called 'UStemp' where US land temperatures from 01/01/1990 in Temp data. Use UStemp dataset to answer the followings.**
@@ -445,7 +510,7 @@ p + labs(title = "Yearly Avg. Temperature") + theme(axis.text.x = element_text(a
     hjust = 1), legend.position = "none")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-19-1.png" width="850px" />
+<img src="report_files/figure-html/unnamed-chunk-24-1.png" width="850px" />
 
 <br>
 
@@ -467,7 +532,7 @@ p + labs(title = "Yearly Average Difference") + theme(axis.text.x = element_text
     hjust = 1), legend.position = "none")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-20-1.png" width="850px" />
+<img src="report_files/figure-html/unnamed-chunk-25-1.png" width="850px" />
 
 <br>
 
@@ -587,7 +652,7 @@ p + labs(title = "Difference per City") + theme(axis.text.x = element_text(angle
     hjust = 1), legend.position = "none")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-23-1.png" width="850px" />
+<img src="report_files/figure-html/unnamed-chunk-28-1.png" width="850px" />
 
 
 <br>
@@ -604,13 +669,14 @@ p4 + labs(title = "Max Difference for Top 20 Countries/Cities", x = "Countries (
     axis.text.x = element_text(angle = 60, hjust = 1), legend.position = "none")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-24-1.png" width="850px" />
+<img src="report_files/figure-html/unnamed-chunk-29-1.png" width="850px" />
 <br>  
 
 #### Looking at the top 20 countries and cities in the world for the temperature swing during a year we see that the City of Harbin has the largest temperature swing, but by and large the countries have a wider temperature swing than the major cities. It is intersting to note that Russia has the 3rd largest temperature swing for a country and has two major cities in the top 20. Canada ranked 4th, also has two top 20 cities while the US is not ranked in the top 20 but has two cities in the top 20.
 
 
-<br>
+<br>  
+
 
 ### Question 05  (10 points)   
 
