@@ -92,7 +92,7 @@ print x
 
 - *Tree*: an ordered factor indicating the tree on which the measurement is made. The ordering  is according to increasing maximum diameter.
 
-- *age*: a numeric vector giving the age of the tree (days since 1968/12/31) circumference: a numeric vector of trunk circumferences (mm). This is probably “circumference at breast height”, a standard measurement in forestry.
+- *age*: a numeric vector giving the age of the tree (days since 1968/12/31) circumference: a numeric vector of trunk circumferences (mm). This is probably 'circumference at breast height', a standard measurement in forestry.
 
 - First, let's load the `Orange` data set into a data frame and examine the structure of the data:
 ```{r}
@@ -122,35 +122,36 @@ str(df$circumference)
 ```{r}
 #aggregate data.frame by Tree and compute mean circumference
 circum.mean <- aggregate(df$circumference,by=list(df$Tree),FUN=mean)
-colnames(circum.mean) <- c("Tree","Avg Circumference")
+colnames(circum.mean) <- c("Tree","Mean Circ.")
 circum.mean
 ```
 
 ```{r}
 #aggregate data.frame by Tree and compute median circumference
 circum.median <- aggregate(df$circumference,by=list(df$Tree),FUN=median)
-colnames(circum.median) <- c("Tree","Med. Circumference")
+colnames(circum.median) <- c("Tree","Median Circ.")
 circum.median
 ```
 
-- **b) Make a scatter plot of the trunk circumferences against the age of the tree. Use different plotting symbols for different size of trees.**
+- **b) Make a scatter plot of the trunk circumferences against the age of the tree. Use different plotting symbols for different size of trees.**labs(title="Scatter Plot \n Age vs Circumference by Tree",x="Age",y="Circumference",
+         colour="Tree")
 
 ```{r}
 #Load ggplot2
 library(ggplot2)
 
-#Scatter plot 
-p <- ggplot(df) + geom_point(aes(y=df$circumference,x=df$age,colour=df$Tree)) +
+#Scatter plot
+p <- ggplot(df) + geom_point(aes(y=circumference,x=age,colour=Tree, shape = Tree), size = 3) +
   scale_colour_hue(l=80, c=150)
-p + labs(title="Scatter Plot \n Age vs Circumference by Tree",x="Age",y="Circumference",
+p + labs(title="Age vs Circumference by Tree",x="Age",y="Circumference",
          colour="Tree")
 ```
 
 ```{r}
 # Line plot
-p <- ggplot(df,aes(y=df$circumference,x=df$age,colour=df$Tree)) + geom_point() +
-  geom_line(size=1,alpha=0.8) + scale_colour_hue(h=c(180, 270))
-p + labs(title="Line Plot \n Age vs Circumference by Tree",x="Age",y="Circumference",
+p <- ggplot(df,aes(y=circumference,x=age,colour=Tree)) + geom_point(aes(shape = Tree), size = 3) +
+  geom_line(size=1,alpha=0.8) + scale_colour_hue(l=80, c=150)
+p + labs(title="Age vs Circumference by Tree",x="Age",y="Circumference",
          colour="Tree")
 ```
 
@@ -179,6 +180,59 @@ p + labs(title="Box Plot: Trunk Circumference", y="Circumference",x="Tree")
 
 - **1.)	First, download a 'Temp' data set. Find the difference between the maximum and the minimum monthly average temperatures for each country and report/visualize top 20 countries with the maximum differences for the period since 1900.**
 
+<br>
+
+#### Load data
+```{r}
+tempraw <- read.csv("./Data/Temp.csv",header=TRUE)
+temp <- tempraw
+#Need to make Date column into a character in order to use grepl to extract out other date format
+temp$Date <- as.character(temp$Date)
+#This deletes all the dates below 1900 because all of those dates are in a different format with "-" and not "/"
+temp <- temp[!grepl("-",temp$Date),]
+# Remove any columns with "NA" just to be careful
+temp1 <- temp[!(is.na(temp$Date)),]
+temp1 <- temp1[!(is.na(temp1$Monthly.AverageTemp)),]
+temp1 <- temp1[!(is.na(temp1$Monthly.AverageTemp.Uncertainty)),]
+temp1 <- temp1[!(is.na(temp1$Country)),]
+#Make Country column a character to make it easier later
+temp1$Country <- as.character(temp1$Country)
+```
+
+
+```{r}
+#Aggregate for max and min average temps
+temp.max <- aggregate(temp1["Monthly.AverageTemp"],by=temp1["Country"],FUN=max)
+temp.min <- aggregate(temp1["Monthly.AverageTemp"],by=temp1["Country"],FUN=min,na.rm=TRUE)
+```
+
+```{r}
+#Create new data.frame to join the two aggregated list
+data <- data.frame(temp.max,temp.min)
+#Drop extra Country column
+data$Country.1 <- NULL
+head(data)
+#Rename column
+colnames(data)<-c("Country","Max Avg. Temp","Min Avg. Temp")
+head(data)
+#Take difference between max and min avg. temp columns
+data$Diff <- data$'Max Avg. Temp' - data$'Min Avg. Temp'
+
+#Sort the dataframe by decreasing Diff
+data <-data[order(data$Diff,data$Country,decreasing = TRUE),]
+head(data, 20)
+#Subset the data to only take the first 20 columns with highest temp diff.
+data.sub <- data[1:20,] 
+```
+
+```{r}
+#####Needs Changing.....
+#plot Country vs Temp Diff
+library(ggplot2)
+p <- ggplot(data.sub,aes(Country,fill=Diff))+geom_bar() + coord_flip()
+p + labs(title="Country vs Change in Temperature", x="Maximum - Minimum Avg. Monthly Temp", y = "Country")
+```
+
 
 - **2.) Select a subset of data called 'UStemp' where US land temperatures from 01/01/1990 in Temp data. Use UStemp dataset to answer the followings.**
 
@@ -192,10 +246,5 @@ p + labs(title="Box Plot: Trunk Circumference", y="Circumference",x="Tree")
 - **3.) Download 'CityTemp' data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.**
 
 - **4.) Compare the two graphs in (i) and (iii)  and comment it.**
-
-
-
-
-
 
 
