@@ -265,7 +265,7 @@ p + labs(title = "Box Plot: Trunk Circumference", y = "Circumference", x = "Tree
 
 <br>
 
-#Load csv
+#### Load data
 
 ```r
 tempraw <- read.csv("./Data/Temp.csv", header = TRUE)
@@ -371,9 +371,13 @@ data.sub <- data[1:20, ]
 ```r
 ##### Needs Changing..... plot Country vs Temp Diff
 library(ggplot2)
-p <- ggplot(data.sub, aes(Country, fill = Diff)) + geom_bar() + coord_flip()
-p + labs(title = "Country vs Change in Temperature", x = "Maximum - Minimum Avg. Monthly Temp", 
-    y = "Country")
+# p <- ggplot(data.sub,aes(Country,fill=Diff))+geom_bar() + coord_flip() p +
+# labs(title='Country vs Change in Temperature', x='Maximum - Minimum Avg.
+# Monthly Temp', y = 'Country')
+
+p <- ggplot(data.sub) + geom_point(aes(x = Country, y = Diff), size = 3, colour = "Red")
+p + labs(title = "Difference per Country") + theme(axis.text.x = element_text(angle = 60, 
+    hjust = 1), legend.position = "none")
 ```
 
 <img src="report_files/figure-html/unnamed-chunk-16-1.png" width="1000px" />
@@ -381,15 +385,216 @@ p + labs(title = "Country vs Change in Temperature", x = "Maximum - Minimum Avg.
 
 - **2.) Select a subset of data called 'UStemp' where US land temperatures from 01/01/1990 in Temp data. Use UStemp dataset to answer the followings.**
 
+
+```r
+temp.usa <- subset(temp1, temp1$Country == "United States")
+head(temp.usa)
+```
+
+```
+##          Date Monthly.AverageTemp Monthly.AverageTemp.Uncertainty
+## 553218 1/1/00              -2.573                           0.443
+## 553219 2/1/00              -2.912                           0.533
+## 553220 3/1/00               2.636                           0.358
+## 553221 4/1/00               8.091                           0.263
+## 553222 5/1/00              14.317                           0.239
+## 553223 6/1/00              19.280                           0.379
+##              Country
+## 553218 United States
+## 553219 United States
+## 553220 United States
+## 553221 United States
+## 553222 United States
+## 553223 United States
+```
+
+```r
+which(temp.usa$Date == "1/1/90")
+```
+
+```
+## [1] 1081
+```
+
+```r
+temp.usa <- temp.usa[-c(1:1080), ]
+temp.usa$Date <- as.Date(temp.usa$Date, format = "%m/%d/%y")
+```
+
+<br>
+
   - **a) Create a new column to display the monthly average land temperatures in Fahrenheit (°F).**
   
-  - **b) Calculate average land temperature by year and plot it. The original file has the average land temperature by month.** 
+
+```r
+temp.usa$Temp_F <- ((temp.usa$Monthly.AverageTemp * (9/5)) + 32)
+```
   
+<br>
+
+  - **b) Calculate average land temperature by year and plot it. The original file has the average land temperature by month.** 
+
+
+```r
+temp.usa$year <- substr(temp.usa$Date, 1, 4)
+temp.usa.year <- aggregate(temp.usa$Temp_F, by = list(temp.usa$year), FUN = mean)
+colnames(temp.usa.year) <- c("Year", "AvgTemp_F")
+# plot(temp.usa.year) temp.usa.year$year <- as.integer(temp.usa.year$Year)
+p <- ggplot(temp.usa.year) + geom_point(aes(x = Year, y = AvgTemp_F), size = 3, colour = "Red")
+p + labs(title = "Yearly Avg. Temperature") + theme(axis.text.x = element_text(angle = 60, 
+    hjust = 1), legend.position = "none")
+```
+
+<img src="report_files/figure-html/unnamed-chunk-19-1.png" width="1000px" />
+
+<br>
+
   - **c) Calculate the one year difference of average land temperature by year and provide the maximum difference (value) with corresponding two years.**
 
+```r
+temp.usa.year.diff <- temp.usa.year$AvgTemp_F[1:23] - temp.usa.year$AvgTemp_F[2:24]
+temp.usa.year.diff.year <- c("1990-1991", "1991-1992", "1992-1993", "1993-1994", 
+    "1994-1995", "1995-1996", "1996-1997", "1997-1998", "1998-1999", "1999-2000", 
+    "2000-2001", "2001-2002", "2002-2003", "2003-2004", "2004-2005", "2005-2006", 
+    "2006-2007", "2007-2008", "2008-2009", "2009-2010", "2010-2011", "2011-2012", 
+    "2012-2013")
+temp.usa.ydiff <- data.frame(temp.usa.year.diff.year, temp.usa.year.diff)
+colnames(temp.usa.ydiff) <- c("Years", "AvgTempDiff")
+# plot(temp.usa.ydiff)
+p <- ggplot(temp.usa.ydiff) + geom_point(aes(x = Years, y = AvgTempDiff), size = 3, 
+    colour = "Red")
+p + labs(title = "Yearly Average Difference") + theme(axis.text.x = element_text(angle = 60, 
+    hjust = 1), legend.position = "none")
+```
 
-- **3.) Download 'CityTemp' data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.**
+<img src="report_files/figure-html/unnamed-chunk-20-1.png" width="1000px" />
+
+<br>
+
+- **3.) Download 'CityTemp' data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.**  
+
+#### Load data
+
+```r
+citytempraw <- read.csv("./Data/CityTemp.csv", header = TRUE)
+citytemp <- citytempraw
+# Need to make Date column into a character in order to use grepl to extract out
+# other date format
+citytemp$Date <- as.character(citytemp$Date)
+# This deletes all the dates below 1900 because all of those dates are in a
+# different format with '-' and not '/'
+citytemp <- citytemp[!grepl("-", citytemp$Date), ]
+# Remove any columns with 'NA' just to be careful
+citytemp1 <- citytemp[!(is.na(citytemp$Date)), ]
+citytemp1 <- citytemp1[!(is.na(citytemp1$Monthly.AverageTemp)), ]
+citytemp1 <- citytemp1[!(is.na(citytemp1$Monthly.AverageTemp.Uncertainty)), ]
+citytemp1 <- citytemp1[!(is.na(citytemp1$City)), ]
+citytemp1 <- citytemp1[!(is.na(citytemp1$Country)), ]
+citytemp1 <- citytemp1[!(is.na(citytemp1$Latitude)), ]
+citytemp1 <- citytemp1[!(is.na(citytemp1$Longitude)), ]
+# Make other columns a character to make it easier later
+citytemp1$City <- as.character(citytemp1$City)
+citytemp1$Country <- as.character(citytemp1$Country)
+citytemp1$Latitude <- as.character(citytemp1$Latitude)
+citytemp1$Longitude <- as.character(citytemp1$Longitude)
+```
+
+
+
+```r
+# Aggregate for max and min average temps
+citytemp.max <- aggregate(citytemp1["Monthly.AverageTemp"], by = citytemp1["City"], 
+    FUN = max)
+citytemp.min <- aggregate(citytemp1["Monthly.AverageTemp"], by = citytemp1["City"], 
+    FUN = min, na.rm = TRUE)
+```
+
+
+
+```r
+# Create new data.frame to join the two aggregated list
+citydata <- data.frame(citytemp.max, citytemp.min)
+# Drop extra Country column
+citydata$City.1 <- NULL
+head(citydata)
+```
+
+```
+##          City Monthly.AverageTemp Monthly.AverageTemp.1
+## 1 Addis Abeba              21.223                14.528
+## 2   Ahmadabad              35.419                17.320
+## 3      Aleppo              32.629                 1.086
+## 4  Alexandria              28.806                12.171
+## 5      Ankara              26.044                -6.195
+## 6     Baghdad              38.283                 4.236
+```
+
+```r
+# Rename column
+colnames(citydata) <- c("City", "Max Avg. Temp", "Min Avg. Temp")
+head(citydata)
+```
+
+```
+##          City Max Avg. Temp Min Avg. Temp
+## 1 Addis Abeba        21.223        14.528
+## 2   Ahmadabad        35.419        17.320
+## 3      Aleppo        32.629         1.086
+## 4  Alexandria        28.806        12.171
+## 5      Ankara        26.044        -6.195
+## 6     Baghdad        38.283         4.236
+```
+
+```r
+# Take difference between max and min avg. temp columns
+citydata$Diff <- citydata$"Max Avg. Temp" - citydata$"Min Avg. Temp"
+
+# Sort the dataframe by decreasing Diff
+citydata <- citydata[order(citydata$Diff, citydata$City, decreasing = TRUE), ]
+head(citydata, 20)
+```
+
+```
+##                City Max Avg. Temp Min Avg. Temp   Diff
+## 34           Harbin        26.509       -26.772 53.281
+## 19        Changchun        26.572       -23.272 49.844
+## 65           Moscow        24.580       -19.376 43.956
+## 85         Shenyang        26.010       -17.035 43.045
+## 64         Montreal        23.059       -18.363 41.422
+## 48             Kiev        24.593       -16.191 40.784
+## 79 Saint Petersburg        21.921       -18.589 40.510
+## 96          Toronto        23.181       -15.502 38.683
+## 92          Taiyuan        24.718       -13.116 37.834
+## 94          Tianjin        28.936        -8.017 36.953
+## 73           Peking        28.936        -8.017 36.953
+## 83            Seoul        26.791        -8.992 35.783
+## 60          Mashhad        27.226        -8.384 35.610
+## 24           Dalian        25.875        -9.348 35.223
+## 21          Chicago        26.372        -8.590 34.962
+## 93         Tangshan        27.346        -7.487 34.833
+## 71         New York        25.313        -9.147 34.460
+## 6           Baghdad        38.283         4.236 34.047
+## 10           Berlin        23.795       -10.125 33.920
+## 43            Jinan        28.389        -5.389 33.778
+```
+
+```r
+# Subset the data to only take the first 20 columns with highest temp diff.
+citydata.sub <- citydata[1:20, ]
+
+p <- ggplot(citydata.sub) + geom_point(aes(x = City, y = Diff), size = 3, colour = "Red")
+p + labs(title = "Difference per City") + theme(axis.text.x = element_text(angle = 60, 
+    hjust = 1), legend.position = "none")
+```
+
+<img src="report_files/figure-html/unnamed-chunk-23-1.png" width="1000px" />
+
+
+<br>
 
 - **4.) Compare the two graphs in (i) and (iii)  and comment it.**
 
+
+
+<br>
 

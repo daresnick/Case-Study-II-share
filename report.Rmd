@@ -229,22 +229,147 @@ data.sub <- data[1:20,]
 #####Needs Changing.....
 #plot Country vs Temp Diff
 library(ggplot2)
-p <- ggplot(data.sub,aes(Country,fill=Diff))+geom_bar() + coord_flip()
-p + labs(title="Country vs Change in Temperature", x="Maximum - Minimum Avg. Monthly Temp", y = "Country")
+#p <- ggplot(data.sub,aes(Country,fill=Diff))+geom_bar() + coord_flip()
+#p + labs(title="Country vs Change in Temperature", x="Maximum - Minimum Avg. Monthly Temp", y = "Country")
+
+p <- ggplot(data.sub) + geom_point(aes(x=Country,y=Diff), size = 3, colour="Red")
+p + labs(title="Difference per Country") + 
+  theme(axis.text.x=element_text(angle=60,hjust=1),legend.position = "none")
+
 ```
 
 
 - **2.) Select a subset of data called 'UStemp' where US land temperatures from 01/01/1990 in Temp data. Use UStemp dataset to answer the followings.**
 
+```{r}
+temp.usa <- subset(temp1,temp1$Country == "United States")
+head(temp.usa)
+which(temp.usa$Date == "1/1/90")
+temp.usa <- temp.usa[-c(1:1080),]
+temp.usa$Date <- as.Date(temp.usa$Date, format="%m/%d/%y")
+```
+
+<br>
+
   - **a) Create a new column to display the monthly average land temperatures in Fahrenheit (°F).**
   
-  - **b) Calculate average land temperature by year and plot it. The original file has the average land temperature by month.** 
+```{r}
+temp.usa$Temp_F <- ((temp.usa$Monthly.AverageTemp * (9/5)) + 32)
+```
   
+<br>
+
+  - **b) Calculate average land temperature by year and plot it. The original file has the average land temperature by month.** 
+
+```{r}
+temp.usa$year <- substr(temp.usa$Date,1,4)
+temp.usa.year <- aggregate(temp.usa$Temp_F,by=list(temp.usa$year),FUN=mean)
+colnames(temp.usa.year) <- c("Year","AvgTemp_F")
+#plot(temp.usa.year)
+#temp.usa.year$year <- as.integer(temp.usa.year$Year)
+p <- ggplot(temp.usa.year) + geom_point(aes(x=Year,y=AvgTemp_F), size = 3, colour="Red")
+p + labs(title="Yearly Avg. Temperature") + 
+  theme(axis.text.x=element_text(angle=60,hjust=1),legend.position = "none")
+```
+
+<br>
+
   - **c) Calculate the one year difference of average land temperature by year and provide the maximum difference (value) with corresponding two years.**
+```{r}
+temp.usa.year.diff <- temp.usa.year$AvgTemp_F[1:23]-temp.usa.year$AvgTemp_F[2:24]
+temp.usa.year.diff.year<- c("1990-1991", "1991-1992", "1992-1993", "1993-1994", "1994-1995", "1995-1996", "1996-1997", "1997-1998", "1998-1999", "1999-2000", "2000-2001", "2001-2002", "2002-2003", "2003-2004", "2004-2005", "2005-2006", "2006-2007", "2007-2008", "2008-2009", "2009-2010", "2010-2011", "2011-2012", "2012-2013")
+temp.usa.ydiff <- data.frame(temp.usa.year.diff.year, temp.usa.year.diff)
+colnames(temp.usa.ydiff) <- c("Years","AvgTempDiff")
+#plot(temp.usa.ydiff)
+p <- ggplot(temp.usa.ydiff) + geom_point(aes(x=Years,y=AvgTempDiff), size = 3, colour="Red")
+p + labs(title="Yearly Average Difference") + 
+  theme(axis.text.x=element_text(angle=60,hjust=1),legend.position = "none")
+```
+
+<br>
+
+- **3.) Download 'CityTemp' data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.**  
+
+#### Load data
+```{r}
+citytempraw <- read.csv("./Data/CityTemp.csv",header=TRUE)
+citytemp <- citytempraw
+#Need to make Date column into a character in order to use grepl to extract out other date format
+citytemp$Date <- as.character(citytemp$Date)
+#This deletes all the dates below 1900 because all of those dates are in a different format with "-" and not "/"
+citytemp <- citytemp[!grepl("-",citytemp$Date),]
+# Remove any columns with "NA" just to be careful
+citytemp1 <- citytemp[!(is.na(citytemp$Date)),]
+citytemp1 <- citytemp1[!(is.na(citytemp1$Monthly.AverageTemp)),]
+citytemp1 <- citytemp1[!(is.na(citytemp1$Monthly.AverageTemp.Uncertainty)),]
+citytemp1 <- citytemp1[!(is.na(citytemp1$City)),]
+citytemp1 <- citytemp1[!(is.na(citytemp1$Country)),]
+citytemp1 <- citytemp1[!(is.na(citytemp1$Latitude)),]
+citytemp1 <- citytemp1[!(is.na(citytemp1$Longitude)),]
+#Make other columns a character to make it easier later
+citytemp1$City <- as.character(citytemp1$City)
+citytemp1$Country <- as.character(citytemp1$Country)
+citytemp1$Latitude <- as.character(citytemp1$Latitude)
+citytemp1$Longitude <- as.character(citytemp1$Longitude)
+```
 
 
-- **3.) Download 'CityTemp' data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.**
+```{r}
+#Aggregate for max and min average temps
+citytemp.max <- aggregate(citytemp1["Monthly.AverageTemp"],by=citytemp1["City"],FUN=max)
+citytemp.min <- aggregate(citytemp1["Monthly.AverageTemp"],by=citytemp1["City"],FUN=min,na.rm=TRUE)
+```
+
+
+```{r}
+#Create new data.frame to join the two aggregated list
+citydata <- data.frame(citytemp.max,citytemp.min)
+#Drop extra Country column
+citydata$City.1 <- NULL
+head(citydata)
+#Rename column
+colnames(citydata)<-c("City","Max Avg. Temp","Min Avg. Temp")
+head(citydata)
+#Take difference between max and min avg. temp columns
+citydata$Diff <- citydata$'Max Avg. Temp' - citydata$'Min Avg. Temp'
+
+#Sort the dataframe by decreasing Diff
+citydata <-citydata[order(citydata$Diff,citydata$City,decreasing = TRUE),]
+head(citydata, 20)
+#Subset the data to only take the first 20 columns with highest temp diff.
+citydata.sub <- citydata[1:20,]
+
+p <- ggplot(citydata.sub) + geom_point(aes(x=City,y=Diff), size = 3, colour="Red")
+p + labs(title="Difference per City") + 
+  theme(axis.text.x=element_text(angle=60,hjust=1),legend.position = "none")
+
+```
+
+
+<br>
 
 - **4.) Compare the two graphs in (i) and (iii)  and comment it.**
 
+```{r}
+#p1 <- ggplot(data.sub) + geom_point(aes(x=Country,y=Diff), size = 3, colour="Blue")
+#p1 + labs(title="Difference per Country") + 
+#  theme(axis.text.x=element_text(angle=60,hjust=1),legend.position = "none")
+#p2 <- ggplot(citydata.sub) + geom_point(aes(x=City,y=Diff), size = 3, colour="Blue2")
+#p2 + labs(title="Difference per City") + 
+#  theme(axis.text.x=element_text(angle=60,hjust=1),legend.position = "none")
+
+
+dffc <- c(data.sub$Country, citydata.sub$City)
+dffdiff <- c(data.sub$Diff, citydata.sub$Diff)
+dffcd <- data.frame(dffc, dffdiff)
+
+p3 <- ggplot(dffcd) + geom_point(aes(x=dffc,y=dffdiff), size = 3, colour="Steelblue")
+p3 + labs(title="Difference per Country and City") + 
+  theme(axis.text.x=element_text(angle=60,hjust=1),legend.position = "none")
+
+#plot3 <- ggplot(NULL) + geom_point(data = data.sub, aes(x=Country,y=Diff)) + geom_step(data = citydata.sub, aes(x=City,y=Diff))
+#plot3
+```
+
+<br>
 
