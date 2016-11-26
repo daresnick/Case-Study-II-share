@@ -12,6 +12,8 @@ subtitle: "Various Coding Problems"
 ```{r setup, include=FALSE}
 library(knitr)
 library(formatR)
+library(ggplot2)
+library(pander)
 knitr::opts_chunk$set(echo = TRUE)
 opts_chunk$set(tidy.opts=list(width.cutoff=80),tidy=TRUE)
 opts_chunk$set(out.width='850px', dpi=300)
@@ -124,6 +126,7 @@ plot(volest,type="l")
 lines(volest2,type="l",col="red")
 lines(volest3, type = "l", col="blue")
 ```
+
 <br>
 
 ### Question 3
@@ -137,14 +140,14 @@ lines(volest3, type = "l", col="blue")
 - *age*: a numeric vector giving the age of the tree (days since 1968/12/31) circumference: a numeric vector of trunk circumferences (mm). This is probably 'circumference at breast height', a standard measurement in forestry.
 
 - First, let's load the `Orange` data set into a data frame and examine the structure of the data:
-```{r}
+```{r, cache=TRUE}
 #Read in Orange dataset from R into data.frame
 df <- data.frame(Orange)
 ```
 
 ```{r}
-#Return first 5 rows of Orange df
-head(df)
+#Return first 6 rows of Orange df
+pander(head(df))
 ```
 
 ```{r}
@@ -154,10 +157,29 @@ summary(df)
 
 ```{r}
 #get structure of each columns
-str(df$Tree)
-str(df$age)
-str(df$circumference)
+str(df)
+df$Tree <- as.character(df$Tree)
 ```
+
+```{r}
+#Take a look at the data
+p <- ggplot(df) + geom_point(aes(y=age,x=Tree,colour=Tree, shape = Tree), size = 3) +
+  scale_colour_hue(l=80, c=150)
+p + labs(title="Age vs Tree Type",x="Tree type",y="Age", colour="Tree")
+```
+
+#### There are seven different ages in years:(118, 484, 664, 1004, 1231, 1372, 1582) and five tree types (1-5).  
+
+<br>  
+
+```{r}
+p2 <- ggplot(df) + geom_point(aes(y=circumference,x=Tree,colour=Tree, shape = Tree), size = 3) +
+  scale_colour_hue(l=80, c=150)
+p2 + labs(title="Circumference vs. Tree Type",x="Tree type",y="Circumference", colour="Tree")
+```
+
+<br>  
+
 
 - **a) Calculate the mean and the median of the trunk circumferences for different size of the trees. (Tree)**
 
@@ -179,9 +201,6 @@ circum.median
          colour="Tree")
 
 ```{r}
-#Load ggplot2
-library(ggplot2)
-
 #Scatter plot
 p <- ggplot(df) + geom_point(aes(y=circumference,x=age,colour=Tree, shape = Tree), size = 3) +
   scale_colour_hue(l=80, c=150)
@@ -208,7 +227,7 @@ circum.max
 ```
 
 ```{r, echo=TRUE}
-factor(df$Tree,c("3","1","5","2","4")) #reorder the boxplot for max circum. by tree
+df$Tree <- factor(df$Tree,c("3","1","5","2","4")) #reorder the boxplot for max circum. by tree
 ```
 
 ```{r}
@@ -225,8 +244,11 @@ p + labs(title="Box Plot: Trunk Circumference", y="Circumference",x="Tree")
 <br>
 
 #### Load data
-```{r}
+```{r, cache=TRUE}
 tempraw <- read.csv("./Data/Temp.csv",header=TRUE)
+```
+
+```{r}
 temp <- tempraw
 #Need to make Date column into a character in order to use grepl to extract out other date format
 temp$Date <- as.character(temp$Date)
@@ -253,16 +275,16 @@ temp.min <- aggregate(temp1["Monthly.AverageTemp"],by=temp1["Country"],FUN=min,n
 data <- data.frame(temp.max,temp.min)
 #Drop extra Country column
 data$Country.1 <- NULL
-head(data)
+#pander(head(data))
 #Rename column
 colnames(data)<-c("Country","Max Avg. Temp","Min Avg. Temp")
-head(data)
+pander(head(data))
 #Take difference between max and min avg. temp columns
 data$Diff <- data$'Max Avg. Temp' - data$'Min Avg. Temp'
 
 #Sort the dataframe by decreasing Diff
 data <-data[order(data$Diff,data$Country,decreasing = TRUE),]
-head(data, 20)
+pander(head(data, 20))
 #Subset the data to only take the first 20 columns with highest temp diff.
 data.sub <- data[1:20,] 
 ```
@@ -270,7 +292,7 @@ data.sub <- data[1:20,]
 ```{r}
 #####Needs Changing.....
 #plot Country vs Temp Diff
-library(ggplot2)
+
 #p <- ggplot(data.sub,aes(Country,fill=Diff))+geom_bar() + coord_flip()
 #p + labs(title="Country vs Change in Temperature", x="Maximum - Minimum Avg. Monthly Temp", y = "Country")
 
@@ -285,7 +307,7 @@ p + labs(title="Difference per Country") +
 
 ```{r}
 temp.usa <- subset(temp1,temp1$Country == "United States")
-head(temp.usa)
+#pander(head(temp.usa))
 which(temp.usa$Date == "1/1/90")
 temp.usa <- temp.usa[-c(1:1080),]
 temp.usa$Date <- as.Date(temp.usa$Date, format="%m/%d/%y")
@@ -368,16 +390,16 @@ citytemp.min <- aggregate(citytemp1["Monthly.AverageTemp"],by=citytemp1["City"],
 citydata <- data.frame(citytemp.max,citytemp.min)
 #Drop extra Country column
 citydata$City.1 <- NULL
-head(citydata)
+#head(citydata)
 #Rename column
 colnames(citydata)<-c("City","Max Avg. Temp","Min Avg. Temp")
-head(citydata)
+#head(citydata)
 #Take difference between max and min avg. temp columns
 citydata$Diff <- citydata$'Max Avg. Temp' - citydata$'Min Avg. Temp'
 
 #Sort the dataframe by decreasing Diff
 citydata <-citydata[order(citydata$Diff,citydata$City,decreasing = TRUE),]
-head(citydata, 20)
+pander(head(citydata, 20))
 #Subset the data to only take the first 20 columns with highest temp diff.
 citydata.sub <- citydata[1:20,]
 

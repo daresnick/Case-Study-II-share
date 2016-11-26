@@ -70,6 +70,13 @@ print x
 library(tseries)
 # SNPdatahist <- get.hist.quote('^gspc',quote='Close')
 SNPdata <- get.hist.quote("adp", quote = "Close")
+```
+
+```
+## time series ends   2016-11-23
+```
+
+```r
 plot(SNPdata)
 ```
 
@@ -110,7 +117,7 @@ get
 ## function (x, pos = -1L, envir = as.environment(pos), mode = "any", 
 ##     inherits = TRUE) 
 ## .Internal(get(x, envir, mode, inherits))
-## <bytecode: 0x00000000135e6f68>
+## <bytecode: 0x00000000135e7120>
 ## <environment: namespace:base>
 ```
 
@@ -143,6 +150,7 @@ lines(volest3, type = "l", col = "blue")
 ```
 
 <img src="report_files/figure-html/unnamed-chunk-6-1.png" width="850px" />
+
 <br>
 
 ### Question 3
@@ -164,19 +172,26 @@ df <- data.frame(Orange)
 
 
 ```r
-# Return first 5 rows of Orange df
-head(df)
+# Return first 6 rows of Orange df
+pander(head(df))
 ```
 
-```
-##   Tree  age circumference
-## 1    1  118            30
-## 2    1  484            58
-## 3    1  664            87
-## 4    1 1004           115
-## 5    1 1231           120
-## 6    1 1372           142
-```
+
+----------------------------
+ Tree   age   circumference 
+------ ----- ---------------
+  1     118        30       
+
+  1     484        58       
+
+  1     664        87       
+
+  1    1004        115      
+
+  1    1231        120      
+
+  1    1372        142      
+----------------------------
 
 
 ```r
@@ -197,28 +212,46 @@ summary(df)
 
 ```r
 # get structure of each columns
-str(df$Tree)
+str(df)
 ```
 
 ```
-##  Ord.factor w/ 5 levels "3"<"1"<"5"<"2"<..: 2 2 2 2 2 2 2 4 4 4 ...
-```
-
-```r
-str(df$age)
-```
-
-```
-##  num [1:35] 118 484 664 1004 1231 ...
+## 'data.frame':	35 obs. of  3 variables:
+##  $ Tree         : Ord.factor w/ 5 levels "3"<"1"<"5"<"2"<..: 2 2 2 2 2 2 2 4 4 4 ...
+##  $ age          : num  118 484 664 1004 1231 ...
+##  $ circumference: num  30 58 87 115 120 142 145 33 69 111 ...
 ```
 
 ```r
-str(df$circumference)
+df$Tree <- as.character(df$Tree)
 ```
 
+
+```r
+# Take a look at the data
+p <- ggplot(df) + geom_point(aes(y = age, x = Tree, colour = Tree, shape = Tree), 
+    size = 3) + scale_colour_hue(l = 80, c = 150)
+p + labs(title = "Age vs Tree Type", x = "Tree type", y = "Age", colour = "Tree")
 ```
-##  num [1:35] 30 58 87 115 120 142 145 33 69 111 ...
+
+<img src="report_files/figure-html/unnamed-chunk-11-1.png" width="850px" />
+
+#### There are seven different ages in years:(118, 484, 664, 1004, 1231, 1372, 1582) and five tree types (1-5).  
+
+<br>  
+
+
+```r
+p2 <- ggplot(df) + geom_point(aes(y = circumference, x = Tree, colour = Tree, shape = Tree), 
+    size = 3) + scale_colour_hue(l = 80, c = 150)
+p2 + labs(title = "Circumference vs. Tree Type", x = "Tree type", y = "Circumference", 
+    colour = "Tree")
 ```
+
+<img src="report_files/figure-html/unnamed-chunk-12-1.png" width="850px" />
+
+<br>  
+
 
 - **a) Calculate the mean and the median of the trunk circumferences for different size of the trees. (Tree)**
 
@@ -232,11 +265,11 @@ circum.mean
 
 ```
 ##   Tree Mean Circ.
-## 1    3   94.00000
-## 2    1   99.57143
-## 3    5  111.14286
-## 4    2  135.28571
-## 5    4  139.28571
+## 1    1   99.57143
+## 2    2  135.28571
+## 3    3   94.00000
+## 4    4  139.28571
+## 5    5  111.14286
 ```
 
 
@@ -249,11 +282,11 @@ circum.median
 
 ```
 ##   Tree Median Circ.
-## 1    3          108
-## 2    1          115
-## 3    5          125
-## 4    2          156
-## 5    4          167
+## 1    1          115
+## 2    2          156
+## 3    3          108
+## 4    4          167
+## 5    5          125
 ```
 
 - **b) Make a scatter plot of the trunk circumferences against the age of the tree. Use different plotting symbols for different size of trees.**labs(title="Scatter Plot \n Age vs Circumference by Tree",x="Age",y="Circumference",
@@ -261,9 +294,6 @@ circum.median
 
 
 ```r
-# Load ggplot2
-library(ggplot2)
-
 # Scatter plot
 p <- ggplot(df) + geom_point(aes(y = circumference, x = age, colour = Tree, shape = Tree), 
     size = 3) + scale_colour_hue(l = 80, c = 150)
@@ -271,7 +301,7 @@ p + labs(title = "Age vs Circumference by Tree", x = "Age", y = "Circumference",
     colour = "Tree")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-13-1.png" width="850px" />
+<img src="report_files/figure-html/unnamed-chunk-15-1.png" width="850px" />
 
 
 ```r
@@ -282,7 +312,7 @@ p + labs(title = "Age vs Circumference by Tree", x = "Age", y = "Circumference",
     colour = "Tree")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-14-1.png" width="850px" />
+<img src="report_files/figure-html/unnamed-chunk-16-1.png" width="850px" />
 
 
 - **c) Display the trunk circumferences on a comparative boxplot against tree. Be sure you order the boxplots in the increasing order of maximum diameter.**
@@ -297,21 +327,16 @@ circum.max
 
 ```
 ##   Tree Max Circum.
-## 1    3         140
-## 2    1         145
-## 3    5         177
-## 4    2         203
-## 5    4         214
+## 1    1         145
+## 2    2         203
+## 3    3         140
+## 4    4         214
+## 5    5         177
 ```
 
 
 ```r
-factor(df$Tree, c("3", "1", "5", "2", "4"))  #reorder the boxplot for max circum. by tree
-```
-
-```
-##  [1] 1 1 1 1 1 1 1 2 2 2 2 2 2 2 3 3 3 3 3 3 3 4 4 4 4 4 4 4 5 5 5 5 5 5 5
-## Levels: 3 < 1 < 5 < 2 < 4
+df$Tree <- factor(df$Tree, c("3", "1", "5", "2", "4"))  #reorder the boxplot for max circum. by tree
 ```
 
 
@@ -320,7 +345,7 @@ p <- ggplot(df, aes(x = Tree, y = circumference)) + geom_boxplot(aes(fill = Tree
 p + labs(title = "Box Plot: Trunk Circumference", y = "Circumference", x = "Tree")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-17-1.png" width="850px" />
+<img src="report_files/figure-html/unnamed-chunk-19-1.png" width="850px" />
 
 <br>
 
@@ -334,6 +359,10 @@ p + labs(title = "Box Plot: Trunk Circumference", y = "Circumference", x = "Tree
 
 ```r
 tempraw <- read.csv("./Data/Temp.csv", header = TRUE)
+```
+
+
+```r
 temp <- tempraw
 # Need to make Date column into a character in order to use grepl to extract out
 # other date format
@@ -365,34 +394,27 @@ temp.min <- aggregate(temp1["Monthly.AverageTemp"], by = temp1["Country"], FUN =
 data <- data.frame(temp.max, temp.min)
 # Drop extra Country column
 data$Country.1 <- NULL
-head(data)
-```
-
-```
-##          Country Monthly.AverageTemp Monthly.AverageTemp.1
-## 1    Afghanistan              28.533                -4.553
-## 2         Africa              27.126                19.794
-## 3        Albania              25.474                -2.049
-## 4        Algeria              35.829                 9.591
-## 5 American Samoa              28.543                24.712
-## 6        Andorra              24.313                -0.361
-```
-
-```r
-# Rename column
+# pander(head(data)) Rename column
 colnames(data) <- c("Country", "Max Avg. Temp", "Min Avg. Temp")
-head(data)
+pander(head(data))
 ```
 
-```
-##          Country Max Avg. Temp Min Avg. Temp
-## 1    Afghanistan        28.533        -4.553
-## 2         Africa        27.126        19.794
-## 3        Albania        25.474        -2.049
-## 4        Algeria        35.829         9.591
-## 5 American Samoa        28.543        24.712
-## 6        Andorra        24.313        -0.361
-```
+
+----------------------------------------------
+   Country      Max Avg. Temp   Min Avg. Temp 
+-------------- --------------- ---------------
+ Afghanistan        28.53          -4.553     
+
+    Africa          27.13           19.79     
+
+   Albania          25.47          -2.049     
+
+   Algeria          35.83           9.591     
+
+American Samoa      28.54           24.71     
+
+   Andorra          24.31          -0.361     
+----------------------------------------------
 
 ```r
 # Take difference between max and min avg. temp columns
@@ -400,32 +422,53 @@ data$Diff <- data$"Max Avg. Temp" - data$"Min Avg. Temp"
 
 # Sort the dataframe by decreasing Diff
 data <- data[order(data$Diff, data$Country, decreasing = TRUE), ]
-head(data, 20)
+pander(head(data, 20))
 ```
 
-```
-##          Country Max Avg. Temp Min Avg. Temp   Diff
-## 115   Kazakhstan        25.562       -23.601 49.163
-## 144     Mongolia        20.716       -27.294 48.010
-## 180       Russia        16.893       -29.789 46.682
-## 39        Canada        14.796       -28.736 43.532
-## 234   Uzbekistan        30.375       -12.323 42.698
-## 225 Turkmenistan        32.136        -8.443 40.579
-## 22       Belarus        22.811       -16.527 39.338
-## 75       Finland        18.967       -20.101 39.068
-## 68       Estonia        22.332       -16.483 38.815
-## 228      Ukraine        23.936       -14.724 38.660
-## 120   Kyrgyzstan        19.275       -19.161 38.436
-## 160  North Korea        23.952       -14.390 38.342
-## 122       Latvia        22.279       -15.784 38.063
-## 142      Moldova        25.231       -12.781 38.012
-## 88     Greenland         0.339       -37.177 37.516
-## 58       Denmark         0.699       -36.439 37.138
-## 128    Lithuania        21.791       -15.179 36.970
-## 216   Tajikistan        19.363       -16.466 35.829
-## 174       Poland        22.509       -13.107 35.616
-## 11       Armenia        25.291        -9.982 35.273
-```
+
+-------------------------------------------------------------
+ &nbsp;     Country     Max Avg. Temp   Min Avg. Temp   Diff 
+--------- ------------ --------------- --------------- ------
+ **115**   Kazakhstan       25.56           -23.6      49.16 
+
+ **144**    Mongolia        20.72          -27.29      48.01 
+
+ **180**     Russia         16.89          -29.79      46.68 
+
+ **39**      Canada         14.8           -28.74      43.53 
+
+ **234**   Uzbekistan       30.38          -12.32       42.7 
+
+ **225**  Turkmenistan      32.14          -8.443      40.58 
+
+ **22**     Belarus         22.81          -16.53      39.34 
+
+ **75**     Finland         18.97           -20.1      39.07 
+
+ **68**     Estonia         22.33          -16.48      38.81 
+
+ **228**    Ukraine         23.94          -14.72      38.66 
+
+ **120**   Kyrgyzstan       19.27          -19.16      38.44 
+
+ **160**  North Korea       23.95          -14.39      38.34 
+
+ **122**     Latvia         22.28          -15.78      38.06 
+
+ **142**    Moldova         25.23          -12.78      38.01 
+
+ **88**    Greenland        0.339          -37.18      37.52 
+
+ **58**     Denmark         0.699          -36.44      37.14 
+
+ **128**   Lithuania        21.79          -15.18      36.97 
+
+ **216**   Tajikistan       19.36          -16.47      35.83 
+
+ **174**     Poland         22.51          -13.11      35.62 
+
+ **11**     Armenia         25.29          -9.982      35.27 
+-------------------------------------------------------------
 
 ```r
 # Subset the data to only take the first 20 columns with highest temp diff.
@@ -435,7 +478,7 @@ data.sub <- data[1:20, ]
 
 ```r
 ##### Needs Changing..... plot Country vs Temp Diff
-library(ggplot2)
+
 # p <- ggplot(data.sub,aes(Country,fill=Diff))+geom_bar() + coord_flip() p +
 # labs(title='Country vs Change in Temperature', x='Maximum - Minimum Avg.
 # Monthly Temp', y = 'Country')
@@ -445,7 +488,7 @@ p + labs(title = "Difference per Country") + theme(axis.text.x = element_text(an
     hjust = 1), legend.position = "none")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-21-1.png" width="850px" />
+<img src="report_files/figure-html/unnamed-chunk-24-1.png" width="850px" />
 
 
 ###(ii) Select a subset of data called 'UStemp' where US land temperatures from 01/01/1990 in Temp data. Use UStemp dataset to answer the followings.**
@@ -453,27 +496,7 @@ p + labs(title = "Difference per Country") + theme(axis.text.x = element_text(an
 
 ```r
 temp.usa <- subset(temp1, temp1$Country == "United States")
-head(temp.usa)
-```
-
-```
-##          Date Monthly.AverageTemp Monthly.AverageTemp.Uncertainty
-## 553218 1/1/00              -2.573                           0.443
-## 553219 2/1/00              -2.912                           0.533
-## 553220 3/1/00               2.636                           0.358
-## 553221 4/1/00               8.091                           0.263
-## 553222 5/1/00              14.317                           0.239
-## 553223 6/1/00              19.280                           0.379
-##              Country
-## 553218 United States
-## 553219 United States
-## 553220 United States
-## 553221 United States
-## 553222 United States
-## 553223 United States
-```
-
-```r
+# pander(head(temp.usa))
 which(temp.usa$Date == "1/1/90")
 ```
 
@@ -510,7 +533,7 @@ p + labs(title = "Yearly Avg. Temperature") + theme(axis.text.x = element_text(a
     hjust = 1), legend.position = "none")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-24-1.png" width="850px" />
+<img src="report_files/figure-html/unnamed-chunk-27-1.png" width="850px" />
 
 <br>
 
@@ -532,7 +555,7 @@ p + labs(title = "Yearly Average Difference") + theme(axis.text.x = element_text
     hjust = 1), legend.position = "none")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-25-1.png" width="850px" />
+<img src="report_files/figure-html/unnamed-chunk-28-1.png" width="850px" />
 
 <br>
 
@@ -581,67 +604,60 @@ citytemp.min <- aggregate(citytemp1["Monthly.AverageTemp"], by = citytemp1["City
 citydata <- data.frame(citytemp.max, citytemp.min)
 # Drop extra Country column
 citydata$City.1 <- NULL
-head(citydata)
-```
-
-```
-##          City Monthly.AverageTemp Monthly.AverageTemp.1
-## 1 Addis Abeba              21.223                14.528
-## 2   Ahmadabad              35.419                17.320
-## 3      Aleppo              32.629                 1.086
-## 4  Alexandria              28.806                12.171
-## 5      Ankara              26.044                -6.195
-## 6     Baghdad              38.283                 4.236
-```
-
-```r
-# Rename column
+# head(citydata) Rename column
 colnames(citydata) <- c("City", "Max Avg. Temp", "Min Avg. Temp")
-head(citydata)
-```
-
-```
-##          City Max Avg. Temp Min Avg. Temp
-## 1 Addis Abeba        21.223        14.528
-## 2   Ahmadabad        35.419        17.320
-## 3      Aleppo        32.629         1.086
-## 4  Alexandria        28.806        12.171
-## 5      Ankara        26.044        -6.195
-## 6     Baghdad        38.283         4.236
-```
-
-```r
-# Take difference between max and min avg. temp columns
+# head(citydata) Take difference between max and min avg. temp columns
 citydata$Diff <- citydata$"Max Avg. Temp" - citydata$"Min Avg. Temp"
 
 # Sort the dataframe by decreasing Diff
 citydata <- citydata[order(citydata$Diff, citydata$City, decreasing = TRUE), ]
-head(citydata, 20)
+pander(head(citydata, 20))
 ```
 
-```
-##                City Max Avg. Temp Min Avg. Temp   Diff
-## 34           Harbin        26.509       -26.772 53.281
-## 19        Changchun        26.572       -23.272 49.844
-## 65           Moscow        24.580       -19.376 43.956
-## 85         Shenyang        26.010       -17.035 43.045
-## 64         Montreal        23.059       -18.363 41.422
-## 48             Kiev        24.593       -16.191 40.784
-## 79 Saint Petersburg        21.921       -18.589 40.510
-## 96          Toronto        23.181       -15.502 38.683
-## 92          Taiyuan        24.718       -13.116 37.834
-## 94          Tianjin        28.936        -8.017 36.953
-## 73           Peking        28.936        -8.017 36.953
-## 83            Seoul        26.791        -8.992 35.783
-## 60          Mashhad        27.226        -8.384 35.610
-## 24           Dalian        25.875        -9.348 35.223
-## 21          Chicago        26.372        -8.590 34.962
-## 93         Tangshan        27.346        -7.487 34.833
-## 71         New York        25.313        -9.147 34.460
-## 6           Baghdad        38.283         4.236 34.047
-## 10           Berlin        23.795       -10.125 33.920
-## 43            Jinan        28.389        -5.389 33.778
-```
+
+----------------------------------------------------------------
+ &nbsp;        City        Max Avg. Temp   Min Avg. Temp   Diff 
+-------- ---------------- --------------- --------------- ------
+ **34**       Harbin           26.51          -26.77      53.28 
+
+ **19**     Changchun          26.57          -23.27      49.84 
+
+ **65**       Moscow           24.58          -19.38      43.96 
+
+ **85**      Shenyang          26.01          -17.04      43.05 
+
+ **64**      Montreal          23.06          -18.36      41.42 
+
+ **48**        Kiev            24.59          -16.19      40.78 
+
+ **79**  Saint Petersburg      21.92          -18.59      40.51 
+
+ **96**      Toronto           23.18           -15.5      38.68 
+
+ **92**      Taiyuan           24.72          -13.12      37.83 
+
+ **94**      Tianjin           28.94          -8.017      36.95 
+
+ **73**       Peking           28.94          -8.017      36.95 
+
+ **83**       Seoul            26.79          -8.992      35.78 
+
+ **60**      Mashhad           27.23          -8.384      35.61 
+
+ **24**       Dalian           25.88          -9.348      35.22 
+
+ **21**      Chicago           26.37           -8.59      34.96 
+
+ **93**      Tangshan          27.35          -7.487      34.83 
+
+ **71**      New York          25.31          -9.147      34.46 
+
+ **6**       Baghdad           38.28           4.236      34.05 
+
+ **10**       Berlin           23.8           -10.12      33.92 
+
+ **43**       Jinan            28.39          -5.389      33.78 
+----------------------------------------------------------------
 
 ```r
 # Subset the data to only take the first 20 columns with highest temp diff.
@@ -652,7 +668,7 @@ p + labs(title = "Difference per City") + theme(axis.text.x = element_text(angle
     hjust = 1), legend.position = "none")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-28-1.png" width="850px" />
+<img src="report_files/figure-html/unnamed-chunk-31-1.png" width="850px" />
 
 
 <br>
@@ -669,7 +685,7 @@ p4 + labs(title = "Max Difference for Top 20 Countries/Cities", x = "Countries (
     axis.text.x = element_text(angle = 60, hjust = 1), legend.position = "none")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-29-1.png" width="850px" />
+<img src="report_files/figure-html/unnamed-chunk-32-1.png" width="850px" />
 <br>  
 
 #### Looking at the top 20 countries and cities in the world for the temperature swing during a year we see that the City of Harbin has the largest temperature swing, but by and large the countries have a wider temperature swing than the major cities. It is intersting to note that Russia has the 3rd largest temperature swing for a country and has two major cities in the top 20. Canada ranked 4th, also has two top 20 cities while the US is not ranked in the top 20 but has two cities in the top 20.
