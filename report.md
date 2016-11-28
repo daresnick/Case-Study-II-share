@@ -122,7 +122,7 @@ get
 ## function (x, pos = -1L, envir = as.environment(pos), mode = "any", 
 ##     inherits = TRUE) 
 ## .Internal(get(x, envir, mode, inherits))
-## <bytecode: 0x00000000135e7040>
+## <bytecode: 0x7fd1a8a63830>
 ## <environment: namespace:base>
 ```
 
@@ -233,13 +233,13 @@ df$Tree <- as.character(df$Tree)
 # Take a look at the data
 p <- ggplot(df) + geom_point(aes(y = age, x = Tree, colour = Tree, shape = Tree), 
     size = 2.5) + scale_colour_hue(l = 80, c = 150)
-p + labs(title = "Age vs Tree Type", x = "Tree type", y = "Age", colour = "Tree")
+p + labs(title = "Age vs Tree Type", x = "Tree type", y = "Age", colour = "Tree") + 
+    theme(plot.title = element_text(hjust = 0.5))
 ```
 
 <img src="report_files/figure-html/unnamed-chunk-11-1.png" width="850px" />
 
 #### There are seven different ages in years:(118, 484, 664, 1004, 1231, 1372, 1582) and five tree types (1-5).  
-
 <br>  
 
 
@@ -247,7 +247,7 @@ p + labs(title = "Age vs Tree Type", x = "Tree type", y = "Age", colour = "Tree"
 p2 <- ggplot(df) + geom_point(aes(y = circumference, x = Tree, colour = Tree, shape = Tree), 
     size = 2.5) + scale_colour_hue(l = 80, c = 150)
 p2 + labs(title = "Circumference vs. Tree Type", x = "Tree type", y = "Circumference", 
-    colour = "Tree")
+    colour = "Tree") + theme(plot.title = element_text(hjust = 0.5))
 ```
 
 <img src="report_files/figure-html/unnamed-chunk-12-1.png" width="850px" />
@@ -302,7 +302,7 @@ circum.median
 p <- ggplot(df) + geom_point(aes(y = circumference, x = age, colour = Tree, shape = Tree), 
     size = 2.5) + scale_colour_hue(l = 80, c = 150)
 p + labs(title = "Age vs Circumference by Tree", x = "Age", y = "Circumference", 
-    colour = "Tree")
+    colour = "Tree") + theme(plot.title = element_text(hjust = 0.5))
 ```
 
 <img src="report_files/figure-html/unnamed-chunk-15-1.png" width="850px" />
@@ -313,7 +313,7 @@ p + labs(title = "Age vs Circumference by Tree", x = "Age", y = "Circumference",
 p <- ggplot(df, aes(y = circumference, x = age, colour = Tree)) + geom_point(aes(shape = Tree), 
     size = 2.5) + geom_line(size = 1, alpha = 0.8) + scale_colour_hue(l = 80, c = 150)
 p + labs(title = "Age vs Circumference by Tree", x = "Age", y = "Circumference", 
-    colour = "Tree")
+    colour = "Tree") + theme(plot.title = element_text(hjust = 0.5))
 ```
 
 <img src="report_files/figure-html/unnamed-chunk-16-1.png" width="850px" />
@@ -349,7 +349,8 @@ df$Tree <- factor(df$Tree, c("3", "1", "5", "2", "4"))  #reorder the boxplot for
 ```r
 p <- ggplot(df, aes(x = Tree, y = circumference)) + geom_boxplot(aes(fill = Tree), 
     width = 0.5)  # ggplot: boxplot 
-p + labs(title = "Box Plot: Trunk Circumference", y = "Circumference", x = "Tree")
+p + labs(title = "Box Plot: Trunk Circumference", y = "Circumference", x = "Tree") + 
+    theme(plot.title = element_text(hjust = 0.5))
 ```
 
 <img src="report_files/figure-html/unnamed-chunk-19-1.png" width="850px" />
@@ -394,7 +395,7 @@ head(temp)
 <br>  
 
 
-**Preprocessing and Exploring the Data:**
+**Preprocessing and Exploring the Data**
 
 
 ```r
@@ -518,7 +519,7 @@ temp.usa$Date <- as.Date(temp.usa$Date, format = "%m/%d/%y")
 
 <br>
 
-  - **a) Create a new column to display the monthly average land temperatures in Fahrenheit (°F).**
+  - **a) Create a new column to display the monthly average land temperatures in Fahrenheit (?F).**
   
 
 ```r
@@ -595,7 +596,7 @@ p + labs(title = "Yearly Avg. Difference Temperature") + theme_bw() + theme(pane
 
 <br>  
 
-####(iii) Download 'CityTemp' data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.**  
+####(iii) Download 'CityTemp' data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.  
 
 
 ```r
@@ -724,7 +725,7 @@ p + labs(title = "Difference per City") + theme(axis.text.x = element_text(angle
 
 <br>
 
-####(iv) Compare the two graphs in (i) and (iii)  and comment it.**
+####(iv) Compare the two graphs in (i) and (iii)  and comment it.
 
 
 ```r

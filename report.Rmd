@@ -171,17 +171,18 @@ df$Tree <- as.character(df$Tree)
 #Take a look at the data
 p <- ggplot(df) + geom_point(aes(y=age,x=Tree,colour=Tree, shape = Tree), size = 2.5) +
   scale_colour_hue(l=80, c=150)
-p + labs(title="Age vs Tree Type",x="Tree type",y="Age", colour="Tree")
+p + labs(title="Age vs Tree Type",x="Tree type",y="Age", colour="Tree") + 
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 
 #### There are seven different ages in years:(118, 484, 664, 1004, 1231, 1372, 1582) and five tree types (1-5).  
-
 <br>  
 
 ```{r}
 p2 <- ggplot(df) + geom_point(aes(y=circumference,x=Tree,colour=Tree, shape = Tree), size = 2.5) +
   scale_colour_hue(l=80, c=150)
-p2 + labs(title="Circumference vs. Tree Type",x="Tree type",y="Circumference", colour="Tree")
+p2 + labs(title="Circumference vs. Tree Type",x="Tree type",y="Circumference", colour="Tree") +
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 
 <br>  
@@ -213,7 +214,7 @@ circum.median
 p <- ggplot(df) + geom_point(aes(y=circumference,x=age,colour=Tree, shape = Tree), size = 2.5) +
   scale_colour_hue(l=80, c=150)
 p + labs(title="Age vs Circumference by Tree",x="Age",y="Circumference",
-         colour="Tree")
+         colour="Tree") + theme(plot.title = element_text(hjust = 0.5))
 ```
 
 ```{r}
@@ -221,7 +222,7 @@ p + labs(title="Age vs Circumference by Tree",x="Age",y="Circumference",
 p <- ggplot(df,aes(y=circumference,x=age,colour=Tree)) + geom_point(aes(shape = Tree), size = 2.5) +
   geom_line(size=1,alpha=0.8) + scale_colour_hue(l=80, c=150)
 p + labs(title="Age vs Circumference by Tree",x="Age",y="Circumference",
-         colour="Tree")
+         colour="Tree") + theme(plot.title = element_text(hjust = 0.5))
 ```
 
 <br>  
@@ -242,7 +243,8 @@ df$Tree <- factor(df$Tree,c("3","1","5","2","4")) #reorder the boxplot for max c
 
 ```{r}
 p<-ggplot(df,aes(x=Tree,y=circumference))+ geom_boxplot(aes(fill=Tree), width = 0.5)# ggplot: boxplot 
-p + labs(title="Box Plot: Trunk Circumference", y="Circumference",x="Tree")
+p + labs(title="Box Plot: Trunk Circumference", y="Circumference",x="Tree") +
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 
 #### Box-plots for Tree Circumference vs. Tree type. You can see that tree type 4 has the largest average circumference while type 3 has the smallest.  
@@ -267,7 +269,7 @@ head(temp)
 <br>  
 
 
-**Preprocessing and Exploring the Data:**
+**Preprocessing and Exploring the Data**
 
 ```{r}
 #Need to make Date column into a character in order to use grepl to extract out other date format
@@ -344,7 +346,7 @@ temp.usa$Date <- as.Date(temp.usa$Date, format="%m/%d/%y")
 
 <br>
 
-  - **a) Create a new column to display the monthly average land temperatures in Fahrenheit (°F).**
+  - **a) Create a new column to display the monthly average land temperatures in Fahrenheit (?F).**
   
 ```{r}
 temp.usa$Temp_F <- ((temp.usa$Monthly.AverageTemp * (9/5)) + 32)
@@ -399,7 +401,7 @@ p + labs(title="Yearly Avg. Difference Temperature") +
 
 <br>  
 
-####(iii) Download 'CityTemp' data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.**  
+####(iii) Download 'CityTemp' data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.  
 
 ```{r}
 citytempraw <- read.csv("./Data/CityTemp.csv",header=TRUE)
@@ -464,7 +466,7 @@ p + labs(title="Difference per City") +
 
 <br>
 
-####(iv) Compare the two graphs in (i) and (iii)  and comment it.**
+####(iv) Compare the two graphs in (i) and (iii)  and comment it.
 
 ```{r}
 p4 <- ggplot() + geom_point(data=data.sub, aes(x=data.sub$Country, y=data.sub$Diff), color='Blue3', size = 2.5) +
