@@ -377,21 +377,37 @@ p + labs(title="USA Yearly Avg. Temperature" , x="Year", y="Temperature (F)") +
 
 <br>
 
-  - **c) Calculate the one year difference of average land temperature by year and provide the maximum difference (value) with corresponding two years.**
+  - **c) Calculate the one year difference of average land temperature by year** 
 
 ```{r}
 temp.usa.year.diff <- df.temp.usa$Temp_F[2:24]-df.temp.usa$Temp_F[1:23]
+```
 
-temp.usa.year.diff.year<- c("1990-1991", "1991-1992", "1992-1993", "1993-1994", 
-                            "1994-1995", "1995-1996", "1996-1997", "1997-1998", "1998-1999", "1999-2000", "2000-2001", 
-                            "2001-2002", "2002-2003", "2003-2004", "2004-2005", "2005-2006", "2006-2007", "2007-2008", 
-                            "2008-2009", "2009-2010", "2010-2011", "2011-2012", "2012-2013")
+```{r}
+# Create a function that returns a character vector for the difference
+# in years from 1990 to 2013
+diff.year <- function(y){#pass the sequence of dates
+  date.char <- as.character(y) #convert dates to strings
+  date.str <- c() # initialize vector
+  for (i in 1:length(date.char)){#iterate from 1 to length of vector
+    date.str[i]<-paste0(date.char[i],"-",date.char[i+1]) #concat date(n) and date(n+1)
+  }# returns date: (i.e. 1990-1991,1992-1992,etc..)
+ return(date.str)
+}
+#Create new object calling the sequence method from the date class
+one.year <- seq(1990,2013,1)
+#call the diff.year function and pass the sequence
+temp.usa.year.diff.year<- diff.year(one.year)
+#Remove the last date: (i.e. NA-2013)
+temp.usa.year.diff.year<-temp.usa.year.diff.year[-length(temp.usa.year.diff.year)]
 
 temp.usa.ydiff <- data.frame(temp.usa.year.diff.year, temp.usa.year.diff)
 colnames(temp.usa.ydiff) <- c("Years","AvgTempDiff")
 
 temp.usa.ydiff$Years2 <- as.integer(temp.usa.ydiff$Years)
+```
 
+```{r}
 p <- ggplot(temp.usa.ydiff) + geom_point(aes(x=Years,y=AvgTempDiff), size = 2, colour="royalblue3")
 p + labs(title="Yearly Avg. Difference Temperature") +
   theme_bw() +  theme(panel.grid.major=element_blank(),panel.grid.minor = element_blank()) +
@@ -399,6 +415,10 @@ p + labs(title="Yearly Avg. Difference Temperature") +
   theme(plot.title=element_text(hjust=0.5)) + geom_line(aes(x=Years2,y=AvgTempDiff),colour="Blue",lwd=1)
 ```
 
+  - ** c) Continue: Provide the maximum difference (value) with corresponding two years.**
+```{r}
+
+```
 <br>  
 
 ####(iii) Download 'CityTemp' data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.  

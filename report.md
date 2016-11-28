@@ -122,7 +122,7 @@ get
 ## function (x, pos = -1L, envir = as.environment(pos), mode = "any", 
 ##     inherits = TRUE) 
 ## .Internal(get(x, envir, mode, inherits))
-## <bytecode: 0x00000000135e6fb0>
+## <bytecode: 0x7fd36c904830>
 ## <environment: namespace:base>
 ```
 
@@ -567,23 +567,41 @@ p + labs(title = "USA Yearly Avg. Temperature", x = "Year", y = "Temperature (F)
 
 <br>
 
-  - **c) Calculate the one year difference of average land temperature by year and provide the maximum difference (value) with corresponding two years.**
+  - **c) Calculate the one year difference of average land temperature by year** 
 
 
 ```r
 temp.usa.year.diff <- df.temp.usa$Temp_F[2:24] - df.temp.usa$Temp_F[1:23]
+```
 
-temp.usa.year.diff.year <- c("1990-1991", "1991-1992", "1992-1993", "1993-1994", 
-    "1994-1995", "1995-1996", "1996-1997", "1997-1998", "1998-1999", "1999-2000", 
-    "2000-2001", "2001-2002", "2002-2003", "2003-2004", "2004-2005", "2005-2006", 
-    "2006-2007", "2007-2008", "2008-2009", "2009-2010", "2010-2011", "2011-2012", 
-    "2012-2013")
+
+```r
+# Create a function that returns a character vector for the difference in years
+# from 1990 to 2013 pass the sequence of dates
+diff.year <- function(y) {
+    date.char <- as.character(y)  #convert dates to strings
+    date.str <- c()  # initialize vector
+    for (i in 1:length(date.char)) {
+        # iterate from 1 to length of vector
+        date.str[i] <- paste0(date.char[i], "-", date.char[i + 1])  #concat date(n) and date(n+1)
+    }  # returns date: (i.e. 1990-1991,1992-1992,etc..)
+    return(date.str)
+}
+# Create new object calling the sequence method from the date class
+one.year <- seq(1990, 2013, 1)
+# call the diff.year function and pass the sequence
+temp.usa.year.diff.year <- diff.year(one.year)
+# Remove the last date: (i.e. NA-2013)
+temp.usa.year.diff.year <- temp.usa.year.diff.year[-length(temp.usa.year.diff.year)]
 
 temp.usa.ydiff <- data.frame(temp.usa.year.diff.year, temp.usa.year.diff)
 colnames(temp.usa.ydiff) <- c("Years", "AvgTempDiff")
 
 temp.usa.ydiff$Years2 <- as.integer(temp.usa.ydiff$Years)
+```
 
+
+```r
 p <- ggplot(temp.usa.ydiff) + geom_point(aes(x = Years, y = AvgTempDiff), size = 2, 
     colour = "royalblue3")
 p + labs(title = "Yearly Avg. Difference Temperature") + theme_bw() + theme(panel.grid.major = element_blank(), 
@@ -592,7 +610,9 @@ p + labs(title = "Yearly Avg. Difference Temperature") + theme_bw() + theme(pane
     geom_line(aes(x = Years2, y = AvgTempDiff), colour = "Blue", lwd = 1)
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-28-1.png" width="850px" />
+<img src="report_files/figure-html/unnamed-chunk-30-1.png" width="850px" />
+
+  - ** c) Continue: Provide the maximum difference (value) with corresponding two years.**
 
 <br>  
 
@@ -720,7 +740,7 @@ p + labs(title = "Difference per City") + theme(axis.text.x = element_text(angle
     hjust = 1), legend.position = "none") + theme(plot.title = element_text(hjust = 0.5))
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-33-1.png" width="850px" />
+<img src="report_files/figure-html/unnamed-chunk-36-1.png" width="850px" />
 
 
 <br>
@@ -738,7 +758,7 @@ p4 + labs(title = "Max Difference for Top 20 Countries/Cities", x = "Countries (
     theme(plot.title = element_text(hjust = 0.5))
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-34-1.png" width="850px" />
+<img src="report_files/figure-html/unnamed-chunk-37-1.png" width="850px" />
 
 <br>  
 
@@ -766,7 +786,7 @@ country_var <- data.sub$Country
 hilow(data.sub, country_var, name = "Country")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-36-1.png" width="850px" />
+<img src="report_files/figure-html/unnamed-chunk-39-1.png" width="850px" />
 
 
 ```r
@@ -775,7 +795,7 @@ city_var <- citydata.sub$City
 hilow(data.sub, city_var, name = "City")
 ```
 
-<img src="report_files/figure-html/unnamed-chunk-37-1.png" width="850px" />
+<img src="report_files/figure-html/unnamed-chunk-40-1.png" width="850px" />
 
 <br>  
 
