@@ -161,11 +161,11 @@ str(df$Tree)
 
 ```{r}
 #Take a look at the data
-explore.data <- function(data,x,n){
+explore.data <- function(data,col.name,n){
   title <-  paste0(n," vs Tree")
-  p <- ggplot(df) + geom_point(aes(y = age, x = Tree, colour = Tree, shape = Tree), 
+  p <- ggplot(df) + geom_point(aes(y = col.name, x = Tree, colour = Tree, shape = Tree), 
                                size = 3) + scale_colour_hue(l = 80, c = 150)
-  p + labs(title = title, x = "Tree type", y = "Age", colour = "Tree") +
+  p + labs(title = title, x = "Tree type", y = n, colour = "Tree") +
     theme(plot.title=element_text(hjust=0.5))
 }
 ```
@@ -296,7 +296,7 @@ head(data,10)
 data.sub <- data[1:20,] 
 #plot Country vs Temp Diff
 p<- ggplot(data.sub,aes(Country,Diff,fill=Diff))+geom_bar(stat='identity') +
-  scale_fill_gradientn(colours=c("dodgerblue1","darkblue","firebrick1"),values = scale(c(35,40,45))) 
+  scale_fill_gradientn(colours=c("dodgerblue1","darkblue","firebrick2"),values = scale(c(35,40,45))) 
 p + labs(title="Country vs Change in Temperature", x="Country",
          y = "High-Low Avg. Monthly Temp Diff") +
   theme(plot.title=element_text(hjust=0.5)) +

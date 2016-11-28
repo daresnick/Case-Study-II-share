@@ -25,7 +25,7 @@ opts_chunk$set(out.width='850px', dpi=300)
 
 **Create the following X matrix and print it from SAS, R, and Python.**
 
-![](https://github.com/daresnick/Case-Study-II-share/blob/master/ExternalFigures/xmatrix.png)
+![](ExternalFigures/xmatrix.png)
 
 - **SAS Code**
 
@@ -41,7 +41,7 @@ quit;
 
 - SAS output for X matrix shown below:
 
-![](https://github.com/daresnick/Case-Study-II-share/blob/master/ExternalFigures/sasmatrixpic.png)
+![](ExternalFigures/sasmatrixpic.png)
 
 
 - **R Code**
@@ -61,21 +61,23 @@ print x
 
  - Python output (Ipython Notebook):
  
- ![](https://github.com/daresnick/Case-Study-II-share/blob/master/ExternalFigures/pythonmatrixpic.png)
+![](ExternalFigures/pythonmatrixpic.png)
 
 <br>
 
 ### Question 2
 
-- **Answer the following questions for Air Products & Chemicals, Inc. stock (symbol = `ADP`):**
+- **Answer the following questions for Automatic Data Processing, Inc. stock (symbol = `ADP`):**   
 
+
+ADP, LLC., is an American provider of human resources management software and services. This file contains analysis of the ADP stock price from 1900-2016.
 
 - **1.) Download the data.**
 ```{r}
 library(tseries)
 #SNPdatahist <- get.hist.quote('^gspc',quote="Close")
 SNPdata <- get.hist.quote('adp',quote="Close")
-plot(SNPdata)
+plot(SNPdata,col="red",main="Stock: Automatic Data Processing, Inc.",xlab="Year",ylab="Closing Price")
 ```
 
 <br>  
@@ -84,6 +86,7 @@ plot(SNPdata)
 ```{r}
 SNPret <- log(lag(SNPdata)) - log(SNPdata)
 SNPret <- SNPret[!(is.na(SNPret)),]
+#plot(SNPret,col="red",main="Stock: Automatic Data Processing, Inc.",xlab="Index",ylab="log(Returns)")
 ```
 
 <br>  
@@ -122,12 +125,15 @@ volest3 <- Vol(100,SNPret)
 
 - **5.) Plot the results, overlaying the volatility curves on the data, just as was done in the S&P example.**
 ```{r}
-plot(volest,type="l")
-lines(volest2,type="l",col="red")
+plot(volest,type="l", col="red",main="Stock: Automatic Data Processing, Inc.",xlab="Index",ylab="Volatility")
+lines(volest2,type="l",col="black")
 lines(volest3, type = "l", col="blue")
 ```
 
-<br>
+#### Volatility for the ADP stock for the three different decay factors, 10 (red), 30(black), and 100(blue).
+
+<br>  
+
 
 ### Question 3
 
@@ -163,7 +169,7 @@ df$Tree <- as.character(df$Tree)
 
 ```{r}
 #Take a look at the data
-p <- ggplot(df) + geom_point(aes(y=age,x=Tree,colour=Tree, shape = Tree), size = 3) +
+p <- ggplot(df) + geom_point(aes(y=age,x=Tree,colour=Tree, shape = Tree), size = 2.5) +
   scale_colour_hue(l=80, c=150)
 p + labs(title="Age vs Tree Type",x="Tree type",y="Age", colour="Tree")
 ```
@@ -173,7 +179,7 @@ p + labs(title="Age vs Tree Type",x="Tree type",y="Age", colour="Tree")
 <br>  
 
 ```{r}
-p2 <- ggplot(df) + geom_point(aes(y=circumference,x=Tree,colour=Tree, shape = Tree), size = 3) +
+p2 <- ggplot(df) + geom_point(aes(y=circumference,x=Tree,colour=Tree, shape = Tree), size = 2.5) +
   scale_colour_hue(l=80, c=150)
 p2 + labs(title="Circumference vs. Tree Type",x="Tree type",y="Circumference", colour="Tree")
 ```
@@ -187,22 +193,24 @@ p2 + labs(title="Circumference vs. Tree Type",x="Tree type",y="Circumference", c
 #aggregate data.frame by Tree and compute mean circumference
 circum.mean <- aggregate(df$circumference,by=list(df$Tree),FUN=mean)
 colnames(circum.mean) <- c("Tree","Mean Circ.")
-circum.mean
+pander(circum.mean)
 ```
 
 ```{r}
 #aggregate data.frame by Tree and compute median circumference
 circum.median <- aggregate(df$circumference,by=list(df$Tree),FUN=median)
 colnames(circum.median) <- c("Tree","Median Circ.")
-circum.median
+pander(circum.median)
 ```
 
-- **b) Make a scatter plot of the trunk circumferences against the age of the tree. Use different plotting symbols for different size of trees.**labs(title="Scatter Plot \n Age vs Circumference by Tree",x="Age",y="Circumference",
-         colour="Tree")
+<br>  
+
+
+- **b) Make a scatter plot of the trunk circumferences against the age of the tree. Use different plotting symbols for different size of trees.**
 
 ```{r}
 #Scatter plot
-p <- ggplot(df) + geom_point(aes(y=circumference,x=age,colour=Tree, shape = Tree), size = 3) +
+p <- ggplot(df) + geom_point(aes(y=circumference,x=age,colour=Tree, shape = Tree), size = 2.5) +
   scale_colour_hue(l=80, c=150)
 p + labs(title="Age vs Circumference by Tree",x="Age",y="Circumference",
          colour="Tree")
@@ -210,11 +218,13 @@ p + labs(title="Age vs Circumference by Tree",x="Age",y="Circumference",
 
 ```{r}
 # Line plot
-p <- ggplot(df,aes(y=circumference,x=age,colour=Tree)) + geom_point(aes(shape = Tree), size = 3) +
+p <- ggplot(df,aes(y=circumference,x=age,colour=Tree)) + geom_point(aes(shape = Tree), size = 2.5) +
   geom_line(size=1,alpha=0.8) + scale_colour_hue(l=80, c=150)
 p + labs(title="Age vs Circumference by Tree",x="Age",y="Circumference",
          colour="Tree")
 ```
+
+<br>  
 
 
 - **c) Display the trunk circumferences on a comparative boxplot against tree. Be sure you order the boxplots in the increasing order of maximum diameter.**
@@ -223,7 +233,7 @@ p + labs(title="Age vs Circumference by Tree",x="Age",y="Circumference",
 #Determine the max circum by each group and reorder the levels accordingly 
 circum.max <- aggregate(df$circumference,by=list(df$Tree),FUN=max)#aggregate for max circum
 colnames(circum.max) <- c("Tree","Max Circum.") #rename columns
-circum.max
+pander(circum.max)
 ```
 
 ```{r, echo=TRUE}
@@ -231,79 +241,98 @@ df$Tree <- factor(df$Tree,c("3","1","5","2","4")) #reorder the boxplot for max c
 ```
 
 ```{r}
-p<-ggplot(df,aes(x=Tree,y=circumference))+ geom_boxplot(aes(fill=Tree))# ggplot: boxplot 
+p<-ggplot(df,aes(x=Tree,y=circumference))+ geom_boxplot(aes(fill=Tree), width = 0.5)# ggplot: boxplot 
 p + labs(title="Box Plot: Trunk Circumference", y="Circumference",x="Tree")
 ```
 
-<br>
+#### Box-plots for Tree Circumference vs. Tree type. You can see that tree type 4 has the largest average circumference while type 3 has the smallest.  
+
+<br>  
+
 
 ### Question 4
 
-###(i) First, download a 'Temp' data set. Find the difference between the maximum and the minimum monthly average temperatures for each country and report/visualize top 20 countries with the maximum differences for the period since 1900.**
+####(i) First, download a 'Temp' data set. Find the difference between the maximum and the minimum monthly average temperatures for each country and report/visualize top 20 countries with the maximum differences for the period since 1900.**
 
 <br>
 
 #### Load data
 ```{r, cache=TRUE}
-tempraw <- read.csv("./Data/Temp.csv",header=TRUE)
+#Create new data.frame to join the two aggregated list'
+tempraw <- read.csv("Data/Temp.csv",header=TRUE)
+temp <- tempraw
+pander(head(temp))
 ```
+
+<br>  
+
+
+**Preprocessing and Exploring the Data:**
 
 ```{r}
-temp <- tempraw
 #Need to make Date column into a character in order to use grepl to extract out other date format
 temp$Date <- as.character(temp$Date)
-#This deletes all the dates below 1900 because all of those dates are in a different format with "-" and not "/"
+
+#Deletes all the dates below 1900 because all of those dates are in a different format with "-" and not "/"
 temp <- temp[!grepl("-",temp$Date),]
+
 # Remove any columns with "NA" just to be careful
 temp1 <- temp[!(is.na(temp$Date)),]
-temp1 <- temp1[!(is.na(temp1$Monthly.AverageTemp)),]
-temp1 <- temp1[!(is.na(temp1$Monthly.AverageTemp.Uncertainty)),]
-temp1 <- temp1[!(is.na(temp1$Country)),]
-#Make Country column a character to make it easier later
-temp1$Country <- as.character(temp1$Country)
-```
 
+#Make Country column a character
+temp1$Country <- as.character(temp1$Country)
+
+#return all the rows (i.e. margin=1) with NA 
+row.with.na <- apply(temp, 1, function(x) {any(is.na(x))})
+
+#Sum all of the rows containing NA
+sprintf("Number of Rows Deleted that contained NA's: %s", sum(row.with.na))
+
+#Remove the Rows with NA's
+temp1 <- temp[!row.with.na,]
+```
 
 ```{r}
 #Aggregate for max and min average temps
 temp.max <- aggregate(temp1["Monthly.AverageTemp"],by=temp1["Country"],FUN=max)
 temp.min <- aggregate(temp1["Monthly.AverageTemp"],by=temp1["Country"],FUN=min,na.rm=TRUE)
-```
 
-```{r}
 #Create new data.frame to join the two aggregated list
 data <- data.frame(temp.max,temp.min)
+
 #Drop extra Country column
 data$Country.1 <- NULL
-#pander(head(data))
+
 #Rename column
 colnames(data)<-c("Country","Max Avg. Temp","Min Avg. Temp")
-pander(head(data))
+
 #Take difference between max and min avg. temp columns
 data$Diff <- data$'Max Avg. Temp' - data$'Min Avg. Temp'
 
 #Sort the dataframe by decreasing Diff
 data <-data[order(data$Diff,data$Country,decreasing = TRUE),]
-pander(head(data, 20))
-#Subset the data to only take the first 20 columns with highest temp diff.
-data.sub <- data[1:20,] 
+pander(head(data,20))
 ```
+
 
 ```{r}
-#####Needs Changing.....
+#Subset the data to only take the first 20 columns with highest temp diff.
+data.sub <- data[1:20,] 
+
 #plot Country vs Temp Diff
-
-#p <- ggplot(data.sub,aes(Country,fill=Diff))+geom_bar() + coord_flip()
-#p + labs(title="Country vs Change in Temperature", x="Maximum - Minimum Avg. Monthly Temp", y = "Country")
-
-p <- ggplot(data.sub) + geom_point(aes(x=Country,y=Diff), size = 3, colour="Red")
-p + labs(title="Difference per Country") + 
-  theme(axis.text.x=element_text(angle=60,hjust=1),legend.position = "none")
-
+p<- ggplot(data.sub,aes(Country,Diff,fill=Diff))+geom_bar(stat='identity') +
+  scale_fill_gradientn(colours=c("dodgerblue1","darkblue","firebrick2"),values = scale(c(35,40,45))) 
+p + labs(title="Country vs Change in Temperature", x="Country",
+         y = "High-Low Avg. Monthly Temp Diff") +
+  theme(plot.title=element_text(hjust=0.5)) +
+  theme(axis.text.x=element_text(angle=60,hjust=1)) + 
+  coord_cartesian(ylim=c(30,50))
 ```
 
+<br>  
 
-###(ii) Select a subset of data called 'UStemp' where US land temperatures from 01/01/1990 in Temp data. Use UStemp dataset to answer the followings.**
+
+####(ii) Select a subset of data called 'UStemp' where US land temperatures from 01/01/1990 in Temp data. Use UStemp dataset to answer the followings.**
 
 ```{r}
 temp.usa <- subset(temp1,temp1$Country == "United States")
@@ -319,117 +348,170 @@ temp.usa$Date <- as.Date(temp.usa$Date, format="%m/%d/%y")
   
 ```{r}
 temp.usa$Temp_F <- ((temp.usa$Monthly.AverageTemp * (9/5)) + 32)
+pander(head(temp.usa["Temp_F"]))
 ```
   
 <br>
 
   - **b) Calculate average land temperature by year and plot it. The original file has the average land temperature by month.** 
 
+
 ```{r}
+#Average Land Temperatue by Year:
 temp.usa$year <- substr(temp.usa$Date,1,4)
-temp.usa.year <- aggregate(temp.usa$Temp_F,by=list(temp.usa$year),FUN=mean)
-colnames(temp.usa.year) <- c("Year","AvgTemp_F")
-#plot(temp.usa.year)
-#temp.usa.year$year <- as.integer(temp.usa.year$Year)
-p <- ggplot(temp.usa.year) + geom_point(aes(x=Year,y=AvgTemp_F), size = 3, colour="Red")
-p + labs(title="Yearly Avg. Temperature") + 
-  theme(axis.text.x=element_text(angle=60,hjust=1),legend.position = "none")
+df.temp.usa <- do.call(data.frame,aggregate(Temp_F ~ year,data=temp.usa,FUN=mean))
+df.temp.usa$year <- as.numeric(as.character(df.temp.usa$year))
+#str(df.temp.usa$year)
+```
+
+```{r}
+#plot USA yearly avgerage temp
+p <- ggplot(df.temp.usa) + geom_line(aes(x=year,y=Temp_F),stat='identity',lwd=1.0,colour="blue") + geom_point(aes(x=year,y=Temp_F), color="royalblue3", size = 2)
+p + labs(title="USA Yearly Avg. Temperature" , x="Year", y="Temperature (F)") + 
+  theme_bw() +  theme(panel.grid.major=element_blank(),panel.grid.minor = element_blank()) +
+  theme(axis.text.x=element_text(angle=60,hjust=1),legend.position = "none") +
+  theme(plot.title=element_text(hjust=0.5)) 
 ```
 
 <br>
 
   - **c) Calculate the one year difference of average land temperature by year and provide the maximum difference (value) with corresponding two years.**
+
 ```{r}
-temp.usa.year.diff <- temp.usa.year$AvgTemp_F[1:23]-temp.usa.year$AvgTemp_F[2:24]
-temp.usa.year.diff.year<- c("1990-1991", "1991-1992", "1992-1993", "1993-1994", "1994-1995", "1995-1996", "1996-1997", "1997-1998", "1998-1999", "1999-2000", "2000-2001", "2001-2002", "2002-2003", "2003-2004", "2004-2005", "2005-2006", "2006-2007", "2007-2008", "2008-2009", "2009-2010", "2010-2011", "2011-2012", "2012-2013")
+temp.usa.year.diff <- temp.usa$Temp_F[1:23]-temp.usa$Temp_F[2:24]
+
+temp.usa.year.diff.year<- c("1990-1991", "1991-1992", "1992-1993", "1993-1994", 
+                            "1994-1995", "1995-1996", "1996-1997", "1997-1998", "1998-1999", "1999-2000", "2000-2001", 
+                            "2001-2002", "2002-2003", "2003-2004", "2004-2005", "2005-2006", "2006-2007", "2007-2008", 
+                            "2008-2009", "2009-2010", "2010-2011", "2011-2012", "2012-2013")
+
 temp.usa.ydiff <- data.frame(temp.usa.year.diff.year, temp.usa.year.diff)
 colnames(temp.usa.ydiff) <- c("Years","AvgTempDiff")
-#plot(temp.usa.ydiff)
-p <- ggplot(temp.usa.ydiff) + geom_point(aes(x=Years,y=AvgTempDiff), size = 3, colour="Red")
-p + labs(title="Yearly Average Difference") + 
-  theme(axis.text.x=element_text(angle=60,hjust=1),legend.position = "none")
+
+temp.usa.ydiff$Years2 <- as.integer(temp.usa.ydiff$Years)
+
+p <- ggplot(temp.usa.ydiff) + geom_point(aes(x=Years,y=AvgTempDiff), size = 2, colour="royalblue3")
+p + labs(title="Yearly Avg. Difference Temperature") +
+  theme_bw() +  theme(panel.grid.major=element_blank(),panel.grid.minor = element_blank()) +
+  theme(axis.text.x=element_text(angle=60,hjust=1),legend.position = "none") +
+  theme(plot.title=element_text(hjust=0.5)) + geom_line(aes(x=Years2,y=AvgTempDiff),colour="Blue",lwd=1)
 ```
 
-<br>
+<br>  
 
-###(iii) Download 'CityTemp' data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.**  
+####(iii) Download 'CityTemp' data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.**  
 
-#### Load data
 ```{r}
 citytempraw <- read.csv("./Data/CityTemp.csv",header=TRUE)
 citytemp <- citytempraw
-#Need to make Date column into a character in order to use grepl to extract out other date format
-citytemp$Date <- as.character(citytemp$Date)
-#This deletes all the dates below 1900 because all of those dates are in a different format with "-" and not "/"
-citytemp <- citytemp[!grepl("-",citytemp$Date),]
-# Remove any columns with "NA" just to be careful
-citytemp1 <- citytemp[!(is.na(citytemp$Date)),]
-citytemp1 <- citytemp1[!(is.na(citytemp1$Monthly.AverageTemp)),]
-citytemp1 <- citytemp1[!(is.na(citytemp1$Monthly.AverageTemp.Uncertainty)),]
-citytemp1 <- citytemp1[!(is.na(citytemp1$City)),]
-citytemp1 <- citytemp1[!(is.na(citytemp1$Country)),]
-citytemp1 <- citytemp1[!(is.na(citytemp1$Latitude)),]
-citytemp1 <- citytemp1[!(is.na(citytemp1$Longitude)),]
-#Make other columns a character to make it easier later
-citytemp1$City <- as.character(citytemp1$City)
-citytemp1$Country <- as.character(citytemp1$Country)
-citytemp1$Latitude <- as.character(citytemp1$Latitude)
-citytemp1$Longitude <- as.character(citytemp1$Longitude)
+head(citytemp)
 ```
 
+```{r}
+#Preprocessing the Data:
+
+#Convert the Date column into a character in order to use grepl to extract out other date format
+citytemp$Date <- as.character(citytemp$Date)
+#Delete all dates below 1900 because all of those dates are in a different format with "-" and not "/"
+citytemp <- citytemp[!grepl("-",citytemp$Date),]
+
+row.with.na <- apply(citytemp,1, function(x){any(is.na(x))})
+sprintf("Number of rows deleted with NA's: %s",sum(row.with.na))
+citytemp1<-citytemp[!row.with.na,]
+```
+
+```{r}
+#Identify which columns are strings
+cols = c(4,5,6,7);    
+# convert these columns to characters using the apply function
+citytemp1[,cols] = apply(citytemp1[,cols], 2, function(x) as.character(x))
+#test if worked correctly
+str(citytemp1$City)
+```
 
 ```{r}
 #Aggregate for max and min average temps
 citytemp.max <- aggregate(citytemp1["Monthly.AverageTemp"],by=citytemp1["City"],FUN=max)
 citytemp.min <- aggregate(citytemp1["Monthly.AverageTemp"],by=citytemp1["City"],FUN=min,na.rm=TRUE)
-```
 
-
-```{r}
 #Create new data.frame to join the two aggregated list
 citydata <- data.frame(citytemp.max,citytemp.min)
+
 #Drop extra Country column
 citydata$City.1 <- NULL
-#head(citydata)
+
 #Rename column
 colnames(citydata)<-c("City","Max Avg. Temp","Min Avg. Temp")
-#head(citydata)
+
 #Take difference between max and min avg. temp columns
 citydata$Diff <- citydata$'Max Avg. Temp' - citydata$'Min Avg. Temp'
 
 #Sort the dataframe by decreasing Diff
 citydata <-citydata[order(citydata$Diff,citydata$City,decreasing = TRUE),]
 pander(head(citydata, 20))
+```
+
+```{r}
 #Subset the data to only take the first 20 columns with highest temp diff.
 citydata.sub <- citydata[1:20,]
 
-p <- ggplot(citydata.sub) + geom_point(aes(x=City,y=Diff), size = 3, colour="Red")
-p + labs(title="Difference per City") + 
-  theme(axis.text.x=element_text(angle=60,hjust=1),legend.position = "none")
-
+p <- ggplot(citydata.sub) + geom_point(aes(x=City,y=Diff), size = 2.5, colour="Red")
+p + labs(title="Difference per City") +
+  theme(axis.text.x=element_text(angle=60,hjust=1), legend.position = "none") +
+  theme(plot.title=element_text(hjust=0.5))
 ```
 
 
 <br>
 
-###(iv) Compare the two graphs in (i) and (iii)  and comment it.**
+####(iv) Compare the two graphs in (i) and (iii)  and comment it.**
 
 ```{r}
-p4 <- ggplot() + geom_point(data=data.sub, aes(x=data.sub$Country, y=data.sub$Diff), color='Blue3', size = 3) + geom_point(data=citydata.sub, aes(x=citydata.sub$City, y=citydata.sub$Diff), color='Red2', size = 3)
-p4 + labs(title="Max Difference for Top 20 Countries/Cities", x = "Countries (Blue) and Cities (Red)", y = "Max Difference") + theme(title=element_text(size=14), axis.title=element_text(size=14), axis.text.x=element_text(angle=60,hjust=1),legend.position = "none")
+p4 <- ggplot() + geom_point(data=data.sub, aes(x=data.sub$Country, y=data.sub$Diff), color='Blue3', size = 2.5) +
+  geom_point(data=citydata.sub, aes(x=citydata.sub$City, y=citydata.sub$Diff), color='Red2', size = 2.5)
+p4 + labs(title="Max Difference for Top 20 Countries/Cities", 
+          x = "Countries (Blue) and Cities (Red)", y = "Max Difference") +
+  theme(title=element_text(size=14), axis.title=element_text(size=14), 
+          axis.text.x=element_text(angle=60,hjust=1),legend.position = "none") +
+  theme(plot.title=element_text(hjust=0.5))
 ```
+
 <br>  
 
 #### Looking at the top 20 countries and cities in the world for the temperature swing during a year we see that the City of Harbin has the largest temperature swing, but by and large the countries have a wider temperature swing than the major cities. It is intersting to note that Russia has the 3rd largest temperature swing for a country and has two major cities in the top 20. Canada ranked 4th, also has two top 20 cities while the US is not ranked in the top 20 but has two cities in the top 20.
 
+<br>  
+
+
+**Extra Exploratory Analysis**
+```{r}
+hilow <- function(df,x,name){
+  p <- ggplot(data=df, aes(x,Diff,fill=Diff)) + geom_bar(stat='identity') + 
+    coord_cartesian(ylim=c(30,50)) + scale_fill_gradient(low = "darkblue", high = "firebrick2")
+  p + labs(title="High-Low Average Temp Difference", 
+           x=name,y="Average Temperature Difference") +  
+    theme(axis.text.x=element_text(angle=60,hjust=1)) + 
+    theme(plot.title=element_text(hjust=0.5)) 
+}
+```
+
+```{r}
+# Difference in Average Temp Per Country
+country_var <- data.sub$Country
+hilow(data.sub,country_var,name="Country")
+```
+
+```{r}
+# Difference in Average Temp Per Country
+city_var <- citydata.sub$City
+hilow(data.sub,city_var,name="City")
+```
 
 <br>  
 
 
-### Question 05  (10 points)   
-
-
+### Question 05  
 
 ####Christmas Bonus
 
-![](https://github.com/daresnick/Case-Study-II-share/blob/master/ExternalFigures/christmasstree.png)
+![](ExternalFigures/christmasstree.png)
