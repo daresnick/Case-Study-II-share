@@ -122,7 +122,7 @@ get
 ## function (x, pos = -1L, envir = as.environment(pos), mode = "any", 
 ##     inherits = TRUE) 
 ## .Internal(get(x, envir, mode, inherits))
-## <bytecode: 0x7fb3ceacd030>
+## <bytecode: 0x7fdc2b55bd08>
 ## <environment: namespace:base>
 ```
 
@@ -585,14 +585,14 @@ diff.year <- function(y) {
         # iterate from 1 to length of vector
         date.str[i] <- paste0(date.char[i], "-", date.char[i + 1])  #concat date(n) and date(n+1)
     }  # returns date: (i.e. 1990-1991,1992-1992,etc..)
+    # Remove the last date: (i.e. NA-2013)
+    date.str <- date.str[-length(date.str)]
     return(date.str)
 }
 # Create new object calling the sequence method from the date class
 one.year <- seq(1990, 2013, 1)
 # call the diff.year function and pass the sequence
 temp.usa.year.diff.year <- diff.year(one.year)
-# Remove the last date: (i.e. NA-2013)
-temp.usa.year.diff.year <- temp.usa.year.diff.year[-length(temp.usa.year.diff.year)]
 
 temp.usa.ydiff <- data.frame(temp.usa.year.diff.year, temp.usa.year.diff)
 colnames(temp.usa.ydiff) <- c("Years", "AvgTempDiff")
