@@ -415,9 +415,23 @@ p + labs(title="Yearly Avg. Difference Temperature") +
   theme(plot.title=element_text(hjust=0.5)) + geom_line(aes(x=Years2,y=AvgTempDiff),colour="Blue",lwd=1)
 ```
 
-  - ** c) Continue: Provide the maximum difference (value) with corresponding two years.**
+  - **c) Continue: Provide the maximum difference (value) with corresponding two years.**
 ```{r}
+#compute the maximum difference in yearly avg. temp between "n" years 
+max.two.year.diff <- function(df.col,n){# take arguments df["colname"] and n_years
+  diff <- numeric() #initialize vector
+  for(i in 1:length(df.col)){#iterate from i to length of df.col
+    diff[i]<-df.col[i+n]-df.col[i] #compute the difference in yearly temp for given time frame
+  }
+  diff.max<-diff[1:(length(diff)-n)] #remove the dates beyond 2013; where diff=NA
+  print(paste0("The max ",n," year difference in avg. yearly temp is:")) 
+  return(max(diff.max)) #return maximum difference yearly avg. temp
+}
 
+df.col<-df.temp.usa$Temp_F
+#call the max.two.year.diff function and pass the Temp_F column 
+#and the number of years between
+max.two.year.diff(df.col,n=2)
 ```
 <br>  
 

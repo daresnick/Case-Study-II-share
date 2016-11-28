@@ -122,7 +122,7 @@ get
 ## function (x, pos = -1L, envir = as.environment(pos), mode = "any", 
 ##     inherits = TRUE) 
 ## .Internal(get(x, envir, mode, inherits))
-## <bytecode: 0x7fd36c904830>
+## <bytecode: 0x7fb3ceacd030>
 ## <environment: namespace:base>
 ```
 
@@ -612,8 +612,35 @@ p + labs(title = "Yearly Avg. Difference Temperature") + theme_bw() + theme(pane
 
 <img src="report_files/figure-html/unnamed-chunk-30-1.png" width="850px" />
 
-  - ** c) Continue: Provide the maximum difference (value) with corresponding two years.**
+  - **c) Continue: Provide the maximum difference (value) with corresponding two years.**
 
+```r
+# compute the maximum difference in yearly avg. temp between 'n' years take
+# arguments df['colname'] and n_years
+max.two.year.diff <- function(df.col, n) {
+    diff <- numeric()  #initialize vector
+    for (i in 1:length(df.col)) {
+        # iterate from i to length of df.col
+        diff[i] <- df.col[i + n] - df.col[i]  #compute the difference in yearly temp for given time frame
+    }
+    diff.max <- diff[1:(length(diff) - n)]  #remove the dates beyond 2013; where diff=NA
+    print(paste0("The max ", n, " year difference in avg. yearly temp is:"))
+    return(max(diff.max))  #return maximum difference yearly avg. temp
+}
+
+df.col <- df.temp.usa$Temp_F
+# call the max.two.year.diff function and pass the Temp_F column and the number
+# of years between
+max.two.year.diff(df.col, n = 2)
+```
+
+```
+## [1] "The max 2 year difference in avg. yearly temp is:"
+```
+
+```
+## [1] 3.14495
+```
 <br>  
 
 ####(iii) Download 'CityTemp' data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.  
