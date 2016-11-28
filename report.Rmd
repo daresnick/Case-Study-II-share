@@ -153,7 +153,7 @@ df <- data.frame(Orange)
 
 ```{r}
 #Return first 6 rows of Orange df
-pander(head(df))
+head(df)
 ```
 
 ```{r}
@@ -193,14 +193,14 @@ p2 + labs(title="Circumference vs. Tree Type",x="Tree type",y="Circumference", c
 #aggregate data.frame by Tree and compute mean circumference
 circum.mean <- aggregate(df$circumference,by=list(df$Tree),FUN=mean)
 colnames(circum.mean) <- c("Tree","Mean Circ.")
-pander(circum.mean)
+circum.mean
 ```
 
 ```{r}
 #aggregate data.frame by Tree and compute median circumference
 circum.median <- aggregate(df$circumference,by=list(df$Tree),FUN=median)
 colnames(circum.median) <- c("Tree","Median Circ.")
-pander(circum.median)
+circum.median
 ```
 
 <br>  
@@ -233,7 +233,7 @@ p + labs(title="Age vs Circumference by Tree",x="Age",y="Circumference",
 #Determine the max circum by each group and reorder the levels accordingly 
 circum.max <- aggregate(df$circumference,by=list(df$Tree),FUN=max)#aggregate for max circum
 colnames(circum.max) <- c("Tree","Max Circum.") #rename columns
-pander(circum.max)
+circum.max
 ```
 
 ```{r, echo=TRUE}
@@ -261,7 +261,7 @@ p + labs(title="Box Plot: Trunk Circumference", y="Circumference",x="Tree")
 #Create new data.frame to join the two aggregated list'
 tempraw <- read.csv("Data/Temp.csv",header=TRUE)
 temp <- tempraw
-pander(head(temp))
+head(temp)
 ```
 
 <br>  
@@ -311,7 +311,7 @@ data$Diff <- data$'Max Avg. Temp' - data$'Min Avg. Temp'
 
 #Sort the dataframe by decreasing Diff
 data <-data[order(data$Diff,data$Country,decreasing = TRUE),]
-pander(head(data,20))
+head(data,20)
 ```
 
 
@@ -348,7 +348,7 @@ temp.usa$Date <- as.Date(temp.usa$Date, format="%m/%d/%y")
   
 ```{r}
 temp.usa$Temp_F <- ((temp.usa$Monthly.AverageTemp * (9/5)) + 32)
-pander(head(temp.usa["Temp_F"]))
+head(temp.usa["Temp_F"])
 ```
   
 <br>
@@ -448,7 +448,7 @@ citydata$Diff <- citydata$'Max Avg. Temp' - citydata$'Min Avg. Temp'
 
 #Sort the dataframe by decreasing Diff
 citydata <-citydata[order(citydata$Diff,citydata$City,decreasing = TRUE),]
-pander(head(citydata, 20))
+head(citydata, 20)
 ```
 
 ```{r}

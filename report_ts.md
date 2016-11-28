@@ -119,7 +119,7 @@ get
 ## function (x, pos = -1L, envir = as.environment(pos), mode = "any", 
 ##     inherits = TRUE) 
 ## .Internal(get(x, envir, mode, inherits))
-## <bytecode: 0x00000000135e7058>
+## <bytecode: 0x00000000135e7050>
 ## <environment: namespace:base>
 ```
 
@@ -423,6 +423,8 @@ temp1 <- temp[!row.with.na, ]
 ```
 
 
+
+
 ```r
 # Aggregate for max and min average temps
 temp.max <- aggregate(temp1["Monthly.AverageTemp"], by = temp1["Country"], FUN = max)
@@ -466,7 +468,7 @@ head(data, 10)
 data.sub <- data[1:20, ]
 # plot Country vs Temp Diff
 p <- ggplot(data.sub, aes(Country, Diff, fill = Diff)) + geom_bar(stat = "identity") + 
-    scale_fill_gradientn(colours = c("dodgerblue1", "darkblue", "firebrick1"), values = scale(c(35, 
+    scale_fill_gradientn(colours = c("dodgerblue1", "darkblue", "firebrick2"), values = scale(c(35, 
         40, 45)))
 p + labs(title = "Country vs Change in Temperature", x = "Country", y = "High-Low Avg. Monthly Temp Diff") + 
     theme(plot.title = element_text(hjust = 0.5)) + theme(axis.text.x = element_text(angle = 60, 
@@ -552,7 +554,8 @@ df.temp.usa$year <- as.numeric(as.character(df.temp.usa$year))
 ```r
 # plot USA yearly avgerage temp
 p <- ggplot(df.temp.usa) + geom_line(aes(x = year, y = Temp_F), stat = "identity", 
-    lwd = 1, colour = "blue")
+    lwd = 1, colour = "blue") + geom_point(aes(x = year, y = Temp_F), color = "blue", 
+    size = 2)
 p + labs(title = "USA Yearly Avg. Temperature", x = "Year", y = "Temperature (F)") + 
     theme_bw() + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
     theme(axis.text.x = element_text(angle = 60, hjust = 1), legend.position = "none") + 

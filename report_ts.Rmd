@@ -269,6 +269,8 @@ sprintf("Number of Rows Deleted that contained NA's: %s ",sum(row.with.na))
 temp1 <- temp[!row.with.na,]
 ```
 
+
+
 ```{r}
 #Aggregate for max and min average temps
 temp.max <- aggregate(temp1["Monthly.AverageTemp"],by=temp1["Country"],FUN=max)
@@ -342,7 +344,7 @@ df.temp.usa$year <- as.numeric(as.character(df.temp.usa$year))
 
 ```{r}
 #plot USA yearly avgerage temp
-p <- ggplot(df.temp.usa) + geom_line(aes(x=year,y=Temp_F),stat='identity',lwd=1.0,colour="blue") 
+p <- ggplot(df.temp.usa) + geom_line(aes(x=year,y=Temp_F),stat='identity',lwd=1.0,colour="blue") + geom_point(aes(x=year,y=Temp_F), color="blue", size = 2)
 p + labs(title="USA Yearly Avg. Temperature" , x="Year", y="Temperature (F)") + 
   theme_bw() +  theme(panel.grid.major=element_blank(),panel.grid.minor = element_blank()) +
   theme(axis.text.x=element_text(angle=60,hjust=1),legend.position = "none") +

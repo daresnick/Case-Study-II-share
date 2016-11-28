@@ -122,7 +122,7 @@ get
 ## function (x, pos = -1L, envir = as.environment(pos), mode = "any", 
 ##     inherits = TRUE) 
 ## .Internal(get(x, envir, mode, inherits))
-## <bytecode: 0x00000000135e7178>
+## <bytecode: 0x00000000135e7040>
 ## <environment: namespace:base>
 ```
 
@@ -182,25 +182,18 @@ df <- data.frame(Orange)
 
 ```r
 # Return first 6 rows of Orange df
-pander(head(df))
+head(df)
 ```
 
-
-----------------------------
- Tree   age   circumference 
------- ----- ---------------
-  1     118        30       
-
-  1     484        58       
-
-  1     664        87       
-
-  1    1004        115      
-
-  1    1231        120      
-
-  1    1372        142      
-----------------------------
+```
+##   Tree  age circumference
+## 1    1  118            30
+## 2    1  484            58
+## 3    1  664            87
+## 4    1 1004           115
+## 5    1 1231           120
+## 6    1 1372           142
+```
 
 
 ```r
@@ -269,46 +262,34 @@ p2 + labs(title = "Circumference vs. Tree Type", x = "Tree type", y = "Circumfer
 # aggregate data.frame by Tree and compute mean circumference
 circum.mean <- aggregate(df$circumference, by = list(df$Tree), FUN = mean)
 colnames(circum.mean) <- c("Tree", "Mean Circ.")
-pander(circum.mean)
+circum.mean
 ```
 
-
--------------------
- Tree   Mean Circ. 
------- ------------
-  1       99.57    
-
-  2       135.3    
-
-  3         94     
-
-  4       139.3    
-
-  5       111.1    
--------------------
+```
+##   Tree Mean Circ.
+## 1    1   99.57143
+## 2    2  135.28571
+## 3    3   94.00000
+## 4    4  139.28571
+## 5    5  111.14286
+```
 
 
 ```r
 # aggregate data.frame by Tree and compute median circumference
 circum.median <- aggregate(df$circumference, by = list(df$Tree), FUN = median)
 colnames(circum.median) <- c("Tree", "Median Circ.")
-pander(circum.median)
+circum.median
 ```
 
-
----------------------
- Tree   Median Circ. 
------- --------------
-  1         115      
-
-  2         156      
-
-  3         108      
-
-  4         167      
-
-  5         125      
----------------------
+```
+##   Tree Median Circ.
+## 1    1          115
+## 2    2          156
+## 3    3          108
+## 4    4          167
+## 5    5          125
+```
 
 <br>  
 
@@ -347,23 +328,17 @@ p + labs(title = "Age vs Circumference by Tree", x = "Age", y = "Circumference",
 # Determine the max circum by each group and reorder the levels accordingly
 circum.max <- aggregate(df$circumference, by = list(df$Tree), FUN = max)  #aggregate for max circum
 colnames(circum.max) <- c("Tree", "Max Circum.")  #rename columns
-pander(circum.max)
+circum.max
 ```
 
-
---------------------
- Tree   Max Circum. 
------- -------------
-  1         145     
-
-  2         203     
-
-  3         140     
-
-  4         214     
-
-  5         177     
---------------------
+```
+##   Tree Max Circum.
+## 1    1         145
+## 2    2         203
+## 3    3         140
+## 4    4         214
+## 5    5         177
+```
 
 
 ```r
@@ -396,25 +371,25 @@ p + labs(title = "Box Plot: Trunk Circumference", y = "Circumference", x = "Tree
 # Create new data.frame to join the two aggregated list'
 tempraw <- read.csv("Data/Temp.csv", header = TRUE)
 temp <- tempraw
-pander(head(temp))
+head(temp)
 ```
 
-
-------------------------------------------------------------------------------
-   Date     Monthly.AverageTemp   Monthly.AverageTemp.Uncertainty    Country  
----------- --------------------- --------------------------------- -----------
-1838-04-01         13.01                       2.586               Afghanistan
-
-1838-05-01          NA                          NA                 Afghanistan
-
-1838-06-01         23.95                       2.51                Afghanistan
-
-1838-07-01         26.88                       2.883               Afghanistan
-
-1838-08-01         24.94                       2.992               Afghanistan
-
-1838-09-01         18.98                       2.538               Afghanistan
-------------------------------------------------------------------------------
+```
+##         Date Monthly.AverageTemp Monthly.AverageTemp.Uncertainty
+## 1 1838-04-01              13.008                           2.586
+## 2 1838-05-01                  NA                              NA
+## 3 1838-06-01              23.950                           2.510
+## 4 1838-07-01              26.877                           2.883
+## 5 1838-08-01              24.938                           2.992
+## 6 1838-09-01              18.981                           2.538
+##       Country
+## 1 Afghanistan
+## 2 Afghanistan
+## 3 Afghanistan
+## 4 Afghanistan
+## 5 Afghanistan
+## 6 Afghanistan
+```
 
 <br>  
 
@@ -476,53 +451,32 @@ data$Diff <- data$"Max Avg. Temp" - data$"Min Avg. Temp"
 
 # Sort the dataframe by decreasing Diff
 data <- data[order(data$Diff, data$Country, decreasing = TRUE), ]
-pander(head(data, 20))
+head(data, 20)
 ```
 
-
--------------------------------------------------------------
- &nbsp;     Country     Max Avg. Temp   Min Avg. Temp   Diff 
---------- ------------ --------------- --------------- ------
- **115**   Kazakhstan       25.56           -23.6      49.16 
-
- **144**    Mongolia        20.72          -27.29      48.01 
-
- **180**     Russia         16.89          -29.79      46.68 
-
- **39**      Canada         14.8           -28.74      43.53 
-
- **234**   Uzbekistan       30.38          -12.32       42.7 
-
- **225**  Turkmenistan      32.14          -8.443      40.58 
-
- **22**     Belarus         22.81          -16.53      39.34 
-
- **75**     Finland         18.97           -20.1      39.07 
-
- **68**     Estonia         22.33          -16.48      38.81 
-
- **228**    Ukraine         23.94          -14.72      38.66 
-
- **120**   Kyrgyzstan       19.27          -19.16      38.44 
-
- **160**  North Korea       23.95          -14.39      38.34 
-
- **122**     Latvia         22.28          -15.78      38.06 
-
- **142**    Moldova         25.23          -12.78      38.01 
-
- **88**    Greenland        0.339          -37.18      37.52 
-
- **58**     Denmark         0.699          -36.44      37.14 
-
- **128**   Lithuania        21.79          -15.18      36.97 
-
- **216**   Tajikistan       19.36          -16.47      35.83 
-
- **174**     Poland         22.51          -13.11      35.62 
-
- **11**     Armenia         25.29          -9.982      35.27 
--------------------------------------------------------------
+```
+##          Country Max Avg. Temp Min Avg. Temp   Diff
+## 115   Kazakhstan        25.562       -23.601 49.163
+## 144     Mongolia        20.716       -27.294 48.010
+## 180       Russia        16.893       -29.789 46.682
+## 39        Canada        14.796       -28.736 43.532
+## 234   Uzbekistan        30.375       -12.323 42.698
+## 225 Turkmenistan        32.136        -8.443 40.579
+## 22       Belarus        22.811       -16.527 39.338
+## 75       Finland        18.967       -20.101 39.068
+## 68       Estonia        22.332       -16.483 38.815
+## 228      Ukraine        23.936       -14.724 38.660
+## 120   Kyrgyzstan        19.275       -19.161 38.436
+## 160  North Korea        23.952       -14.390 38.342
+## 122       Latvia        22.279       -15.784 38.063
+## 142      Moldova        25.231       -12.781 38.012
+## 88     Greenland         0.339       -37.177 37.516
+## 58       Denmark         0.699       -36.439 37.138
+## 128    Lithuania        21.791       -15.179 36.970
+## 216   Tajikistan        19.363       -16.466 35.829
+## 174       Poland        22.509       -13.107 35.616
+## 11       Armenia        25.291        -9.982 35.273
+```
 
 
 
@@ -569,25 +523,18 @@ temp.usa$Date <- as.Date(temp.usa$Date, format = "%m/%d/%y")
 
 ```r
 temp.usa$Temp_F <- ((temp.usa$Monthly.AverageTemp * (9/5)) + 32)
-pander(head(temp.usa["Temp_F"]))
+head(temp.usa["Temp_F"])
 ```
 
-
----------------------
-   &nbsp;     Temp_F 
------------- --------
- **554298**   29.98  
-
- **554299**   28.86  
-
- **554300**   40.04  
-
- **554301**   48.88  
-
- **554302**   56.79  
-
- **554303**    67.6  
----------------------
+```
+##         Temp_F
+## 554298 29.9786
+## 554299 28.8554
+## 554300 40.0370
+## 554301 48.8840
+## 554302 56.7896
+## 554303 67.6040
+```
   
 <br>
 
@@ -735,53 +682,32 @@ citydata$Diff <- citydata$"Max Avg. Temp" - citydata$"Min Avg. Temp"
 
 # Sort the dataframe by decreasing Diff
 citydata <- citydata[order(citydata$Diff, citydata$City, decreasing = TRUE), ]
-pander(head(citydata, 20))
+head(citydata, 20)
 ```
 
-
-----------------------------------------------------------------
- &nbsp;        City        Max Avg. Temp   Min Avg. Temp   Diff 
--------- ---------------- --------------- --------------- ------
- **34**       Harbin           26.51          -26.77      53.28 
-
- **19**     Changchun          26.57          -23.27      49.84 
-
- **65**       Moscow           24.58          -19.38      43.96 
-
- **85**      Shenyang          26.01          -17.04      43.05 
-
- **64**      Montreal          23.06          -18.36      41.42 
-
- **48**        Kiev            24.59          -16.19      40.78 
-
- **79**  Saint Petersburg      21.92          -18.59      40.51 
-
- **96**      Toronto           23.18           -15.5      38.68 
-
- **92**      Taiyuan           24.72          -13.12      37.83 
-
- **94**      Tianjin           28.94          -8.017      36.95 
-
- **73**       Peking           28.94          -8.017      36.95 
-
- **83**       Seoul            26.79          -8.992      35.78 
-
- **60**      Mashhad           27.23          -8.384      35.61 
-
- **24**       Dalian           25.88          -9.348      35.22 
-
- **21**      Chicago           26.37           -8.59      34.96 
-
- **93**      Tangshan          27.35          -7.487      34.83 
-
- **71**      New York          25.31          -9.147      34.46 
-
- **6**       Baghdad           38.28           4.236      34.05 
-
- **10**       Berlin           23.8           -10.12      33.92 
-
- **43**       Jinan            28.39          -5.389      33.78 
-----------------------------------------------------------------
+```
+##                City Max Avg. Temp Min Avg. Temp   Diff
+## 34           Harbin        26.509       -26.772 53.281
+## 19        Changchun        26.572       -23.272 49.844
+## 65           Moscow        24.580       -19.376 43.956
+## 85         Shenyang        26.010       -17.035 43.045
+## 64         Montreal        23.059       -18.363 41.422
+## 48             Kiev        24.593       -16.191 40.784
+## 79 Saint Petersburg        21.921       -18.589 40.510
+## 96          Toronto        23.181       -15.502 38.683
+## 92          Taiyuan        24.718       -13.116 37.834
+## 94          Tianjin        28.936        -8.017 36.953
+## 73           Peking        28.936        -8.017 36.953
+## 83            Seoul        26.791        -8.992 35.783
+## 60          Mashhad        27.226        -8.384 35.610
+## 24           Dalian        25.875        -9.348 35.223
+## 21          Chicago        26.372        -8.590 34.962
+## 93         Tangshan        27.346        -7.487 34.833
+## 71         New York        25.313        -9.147 34.460
+## 6           Baghdad        38.283         4.236 34.047
+## 10           Berlin        23.795       -10.125 33.920
+## 43            Jinan        28.389        -5.389 33.778
+```
 
 
 ```r
