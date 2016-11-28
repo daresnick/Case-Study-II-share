@@ -122,7 +122,7 @@ get
 ## function (x, pos = -1L, envir = as.environment(pos), mode = "any", 
 ##     inherits = TRUE) 
 ## .Internal(get(x, envir, mode, inherits))
-## <bytecode: 0x7fd1a8a63830>
+## <bytecode: 0x00000000135e6fb0>
 ## <environment: namespace:base>
 ```
 
@@ -489,7 +489,7 @@ data.sub <- data[1:20, ]
 p <- ggplot(data.sub, aes(Country, Diff, fill = Diff)) + geom_bar(stat = "identity") + 
     scale_fill_gradientn(colours = c("dodgerblue1", "darkblue", "firebrick2"), values = scale(c(35, 
         40, 45)))
-p + labs(title = "Country vs Change in Temperature", x = "Country", y = "High-Low Avg. Monthly Temp Diff") + 
+p + labs(title = "Change in Temperature vs Country", x = "Country", y = "High-Low Avg. Monthly Temp Diff") + 
     theme(plot.title = element_text(hjust = 0.5)) + theme(axis.text.x = element_text(angle = 60, 
     hjust = 1)) + coord_cartesian(ylim = c(30, 50))
 ```
@@ -571,7 +571,7 @@ p + labs(title = "USA Yearly Avg. Temperature", x = "Year", y = "Temperature (F)
 
 
 ```r
-temp.usa.year.diff <- temp.usa$Temp_F[1:23] - temp.usa$Temp_F[2:24]
+temp.usa.year.diff <- df.temp.usa$Temp_F[2:24] - df.temp.usa$Temp_F[1:23]
 
 temp.usa.year.diff.year <- c("1990-1991", "1991-1992", "1992-1993", "1993-1994", 
     "1994-1995", "1995-1996", "1996-1997", "1997-1998", "1998-1999", "1999-2000", 

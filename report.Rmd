@@ -324,7 +324,7 @@ data.sub <- data[1:20,]
 #plot Country vs Temp Diff
 p<- ggplot(data.sub,aes(Country,Diff,fill=Diff))+geom_bar(stat='identity') +
   scale_fill_gradientn(colours=c("dodgerblue1","darkblue","firebrick2"),values = scale(c(35,40,45))) 
-p + labs(title="Country vs Change in Temperature", x="Country",
+p + labs(title="Change in Temperature vs Country", x="Country",
          y = "High-Low Avg. Monthly Temp Diff") +
   theme(plot.title=element_text(hjust=0.5)) +
   theme(axis.text.x=element_text(angle=60,hjust=1)) + 
@@ -380,7 +380,7 @@ p + labs(title="USA Yearly Avg. Temperature" , x="Year", y="Temperature (F)") +
   - **c) Calculate the one year difference of average land temperature by year and provide the maximum difference (value) with corresponding two years.**
 
 ```{r}
-temp.usa.year.diff <- temp.usa$Temp_F[1:23]-temp.usa$Temp_F[2:24]
+temp.usa.year.diff <- df.temp.usa$Temp_F[2:24]-df.temp.usa$Temp_F[1:23]
 
 temp.usa.year.diff.year<- c("1990-1991", "1991-1992", "1992-1993", "1993-1994", 
                             "1994-1995", "1995-1996", "1996-1997", "1997-1998", "1998-1999", "1999-2000", "2000-2001", 
