@@ -14,7 +14,7 @@
 <br>  
 
 
-#### This Case Study is a solution of various coding questions mainly in R with a touch of SAS and python.  The solution is provided in the report.Rmd file and displays well on Github in the report.md file.
+#### This Case Study is a solution of various coding problems mainly in R with a touch of SAS and Python.  The solution is provided in the report.Rmd file and displays well on Github in the report.md file.
 
 <br>  
 
