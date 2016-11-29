@@ -20,4 +20,4 @@
 #### Both authors would like to thank the instructor and TA's for the SMU Doing Data Science masters program class.  
 
 
-
+#### The report.Rmd file was made using RStudio and includes an RMarkdown file that should run all the code and display all the figures if knitted in RStudio.  The data used is found in the Data folder and all the code is also available and can be run from the analysis.R file in the Analysis folder.
