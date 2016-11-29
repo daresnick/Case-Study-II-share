@@ -19,7 +19,7 @@
 <br>  
 
 
-#### The questions are included in the report.md file and include a question about outputing a matrix in SAS, R, and python, a time series analysis involving the stock price of ADP in last 16 years, a detailed analysis about the growth of trees in the built-in data set Orange in R, and an analysis of average temperatures in major countries and cities around the globe over the last 16 years.  
+#### The questions are included in the report.md file and include a question about outputing a matrix in SAS, R, and python, a time series analysis involving the stock price of ADP in the last 16 years, a detailed analysis about the growth of trees in the built-in data set Orange in R, and an analysis of average temperatures in major countries and cities around the globe over the last 16 years.  
 
 <br>  
 
