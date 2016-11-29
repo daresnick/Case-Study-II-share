@@ -122,7 +122,7 @@ get
 ## function (x, pos = -1L, envir = as.environment(pos), mode = "any", 
 ##     inherits = TRUE) 
 ## .Internal(get(x, envir, mode, inherits))
-## <bytecode: 0x7fdc2b55bd08>
+## <bytecode: 0x00000000135e7060>
 ## <environment: namespace:base>
 ```
 
